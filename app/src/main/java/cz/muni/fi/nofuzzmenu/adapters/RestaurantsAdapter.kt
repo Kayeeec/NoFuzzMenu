@@ -3,14 +3,16 @@ package cz.muni.fi.nofuzzmenu.adapters
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurant
+import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurantWrapper
 
 class RestaurantsAdapter(private var restaurants: List<ZomatoRestaurant>) : RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
 
-    fun refresh(restaurants: List<ZomatoRestaurant>) {
-        this.restaurants = restaurants
+    fun refresh(restaurants: List<ZomatoRestaurantWrapper>) {
+        this.restaurants = restaurants.map { restaurantWrapper -> restaurantWrapper.restaurant }
         notifyDataSetChanged()
     }
 
@@ -45,8 +47,8 @@ class RestaurantsAdapter(private var restaurants: List<ZomatoRestaurant>) : Recy
      */
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        //var avatar: ImageView = itemView.findViewById(R.id.avatar)
-        //var login: TextView = itemView.findViewById(R.id.login)
+        var name: TextView = itemView.findViewById(R.id.name)
+        var address: TextView = itemView.findViewById(R.id.address)
 
         fun bind(restaurant: ZomatoRestaurant) {
             //val context = avatar.context
@@ -54,7 +56,8 @@ class RestaurantsAdapter(private var restaurants: List<ZomatoRestaurant>) : Recy
             //Glide.with(context)
             //    .load(user.avatarUrl)
             //    .into(avatar)
-            //login.text = user.login
+            name.text = restaurant.name
+            address.text = restaurant.location.address
         }
     }
 }

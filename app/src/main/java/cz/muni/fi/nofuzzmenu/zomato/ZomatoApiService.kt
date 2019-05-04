@@ -1,9 +1,6 @@
 package cz.muni.fi.nofuzzmenu.zomato
 
-import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoEstablishmentType
-import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoLocation
-import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoMenu
-import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurant
+import cz.muni.fi.nofuzzmenu.zomato.models.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Header
@@ -47,7 +44,7 @@ interface ZomatoApiService {
         @Query("cuisines") cuisines: String?, // comma-separated IDs
         @Query("sort") sortBy: String?, // TODO use enum, to string: cost, rating, real_distance (dist works well)
         @Query("order") sortOrder: String? // asc/desc
-    ) : Call<List<ZomatoRestaurant>>
+    ) : Call<ZomatoRestaurantsListResponse>
 
 
 }

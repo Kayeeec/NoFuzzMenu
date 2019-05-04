@@ -7,11 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantsAdapter
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
-import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurant
-import kotlinx.android.synthetic.main.restaurant_list.*
+import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurantsListResponse
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -21,22 +21,22 @@ class RestaurantListFragment : Fragment() {
 
     // TODO: move api key to some constants
     private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1")
-   private lateinit var adapter: RestaurantsAdapter
+    private val adapter = RestaurantsAdapter(ArrayList())
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.restaurant_list, container, false)
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
+        val view = inflater.inflate(R.layout.fragment_restaurant_list, container, false)
 
         val searchParameters = loadSavedParameters()
         loadRestaurants(searchParameters)
 
-        list.adapter = RestaurantsAdapter(listOf())
+        val list = view.findViewById<RecyclerView>(android.R.id.list)
         list.layoutManager = LinearLayoutManager(context)
+        list.adapter = adapter
         list.setHasFixedSize(true)
+
+        return view
     }
+
 
     /**
      * Loads a list of nearby restaurants based on current settings.
@@ -54,14 +54,14 @@ class RestaurantListFragment : Fragment() {
             sortBy = searchParameters["sortBy"],
             sortOrder = searchParameters["sortOrder"]
             )
-        call.enqueue(object : Callback<List<ZomatoRestaurant>> {
+        call.enqueue(object : Callback<ZomatoRestaurantsListResponse> {
 
-            override fun onResponse(call: Call<List<ZomatoRestaurant>>, response: Response<List<ZomatoRestaurant>>) {
+            override fun onResponse(call: Call<ZomatoRestaurantsListResponse>, response: Response<ZomatoRestaurantsListResponse>) {
                 val body = response.body()
                 populateList(body)
             }
 
-            override fun onFailure(call: Call<List<ZomatoRestaurant>>, t: Throwable) {
+            override fun onFailure(call: Call<ZomatoRestaurantsListResponse>, t: Throwable) {
                 t.printStackTrace()
             }
         })
@@ -79,11 +79,11 @@ class RestaurantListFragment : Fragment() {
         return result
     }
 
-    private fun populateList(restaurants: List<ZomatoRestaurant>?) {
-        if (restaurants == null) {
+    private fun populateList(response: ZomatoRestaurantsListResponse?) {
+        if (response == null) {
             return
         }
 
-        adapter.refresh(restaurants)
+        adapter.refresh(response.restaurants)
     }
 }
