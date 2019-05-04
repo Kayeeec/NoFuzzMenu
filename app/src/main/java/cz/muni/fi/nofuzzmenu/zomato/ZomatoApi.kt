@@ -10,6 +10,7 @@ class ZomatoApi(val apiKey: String) {
     val service: ZomatoApiService
 
     companion object {
+        const val protocol = "http://"
         const val hostname = "developers.zomato.com"
         const val apiVersion = "api/v2.1"
     }
@@ -26,7 +27,7 @@ class ZomatoApi(val apiKey: String) {
         val client = builder.build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("$hostname/$apiVersion")
+            .baseUrl("$protocol/$hostname/$apiVersion/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()
