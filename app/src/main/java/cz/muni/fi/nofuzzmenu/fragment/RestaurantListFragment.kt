@@ -1,26 +1,27 @@
 package cz.muni.fi.nofuzzmenu.fragment
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import cz.muni.fi.nofuzzmenu.R
-import cz.muni.fi.nofuzzmenu.models.Restaurant
+import cz.muni.fi.nofuzzmenu.adapters.RestaurantsAdapter
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
 import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurant
-import io.realm.Realm
 import kotlinx.android.synthetic.main.restaurant_list.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+import kotlin.collections.HashMap
 
 class RestaurantListFragment : Fragment() {
 
     // TODO: move api key to some constants
     private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1")
-    private val realm = Realm.getDefaultInstance()
+   private lateinit var adapter: RestaurantsAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.restaurant_list, container, false)
@@ -30,17 +31,11 @@ class RestaurantListFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
 
         val searchParameters = loadSavedParameters()
-        loadRestaurants(config)
+        loadRestaurants(searchParameters)
 
-        val restaurants = realm.where(Restaurant::class.java).findAll()
-        list.adapter = RestaurantsAdapter(restaurants)
+        list.adapter = RestaurantsAdapter(listOf())
         list.layoutManager = LinearLayoutManager(context)
         list.setHasFixedSize(true)
-    }
-
-    override fun onDestroy() {
-        super.onDestroy()
-        realm.close()
     }
 
     /**
@@ -62,25 +57,33 @@ class RestaurantListFragment : Fragment() {
         call.enqueue(object : Callback<List<ZomatoRestaurant>> {
 
             override fun onResponse(call: Call<List<ZomatoRestaurant>>, response: Response<List<ZomatoRestaurant>>) {
-                saveResult(response.body())
+                val body = response.body()
+                populateList(body)
             }
 
             override fun onFailure(call: Call<List<ZomatoRestaurant>>, t: Throwable) {
                 t.printStackTrace()
             }
-
-            /**
-             * IMPORTANT NOTE: It's better to write and read asynchronously. But for the sake of simplicity...
-             */
-            private fun saveResult(watchers: List<ZomatoRestaurant>?) {
-                var realm: Realm? = null
-                try {
-                    realm = Realm.getDefaultInstance()
-                    realm.executeTransaction { it.insertOrUpdate(watchers!!) }
-                } finally {
-                    realm?.close()
-                }
-            }
         })
+    }
+
+    private fun loadSavedParameters(): Map<String, String> {
+        val prefs = PreferenceManager.getDefaultSharedPreferences(context)
+        val all = prefs.all
+        val result = HashMap<String, String>()
+        for (item in all) {
+            if (item.value !is String){
+                result[item.key] = item.value.toString()
+            }
+        }
+        return result
+    }
+
+    private fun populateList(restaurants: List<ZomatoRestaurant>?) {
+        if (restaurants == null) {
+            return
+        }
+
+        adapter.refresh(restaurants)
     }
 }
