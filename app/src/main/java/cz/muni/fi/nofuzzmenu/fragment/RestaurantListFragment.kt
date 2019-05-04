@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.models.Restaurant
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
+import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurant
 import io.realm.Realm
 import kotlinx.android.synthetic.main.restaurant_list.*
 import retrofit2.Call
@@ -58,20 +59,20 @@ class RestaurantListFragment : Fragment() {
             sortBy = searchParameters["sortBy"],
             sortOrder = searchParameters["sortOrder"]
             )
-        call.enqueue(object : Callback<List<Restaurant>> {
+        call.enqueue(object : Callback<List<ZomatoRestaurant>> {
 
-            override fun onResponse(call: Call<List<User>>, response: Response<List<User>>) {
+            override fun onResponse(call: Call<List<ZomatoRestaurant>>, response: Response<List<ZomatoRestaurant>>) {
                 saveResult(response.body())
             }
 
-            override fun onFailure(call: Call<List<User>>, t: Throwable) {
+            override fun onFailure(call: Call<List<ZomatoRestaurant>>, t: Throwable) {
                 t.printStackTrace()
             }
 
             /**
              * IMPORTANT NOTE: It's better to write and read asynchronously. But for the sake of simplicity...
              */
-            private fun saveResult(watchers: List<User>?) {
+            private fun saveResult(watchers: List<ZomatoRestaurant>?) {
                 var realm: Realm? = null
                 try {
                     realm = Realm.getDefaultInstance()
