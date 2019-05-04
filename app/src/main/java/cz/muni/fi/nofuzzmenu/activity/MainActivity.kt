@@ -1,10 +1,12 @@
-package cz.muni.fi.nofuzzmenu
+package cz.muni.fi.nofuzzmenu.activity
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu
 import android.view.MenuItem
+import cz.muni.fi.nofuzzmenu.R
+import cz.muni.fi.nofuzzmenu.fragment.RestaurantListFragment
 
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -18,6 +20,14 @@ class MainActivity : AppCompatActivity() {
         fab.setOnClickListener { view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
                 .setAction("Action", null).show()
+        }
+
+        // initialize restaurant view fragment
+        if (savedInstanceState == null) {
+            val fragmentManager = supportFragmentManager
+            fragmentManager?.beginTransaction()?.replace(android.R.id.content,
+                RestaurantListFragment(),
+                RestaurantListFragment::class.java.simpleName)?.commit()
         }
     }
 
