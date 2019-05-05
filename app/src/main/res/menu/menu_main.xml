@@ -2,6 +2,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context="cz.muni.fi.nofuzzmenu.activity.MainActivity">
+
+    <!-- "Quick Settings" icon for navigating to search settings -->
+    <item
+            android:id="@+id/action_search_settings"
+            android:icon="@drawable/crosshairs_gps"
+            android:title="@string/action_search_settings"
+            app:showAsAction="ifRoom"/>
+
     <item
         android:id="@+id/action_settings"
         android:orderInCategory="100"

@@ -1,7 +1,9 @@
 package cz.muni.fi.nofuzzmenu.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,9 +11,11 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
+import cz.muni.fi.nofuzzmenu.activity.SearchSettingsActivity
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantsAdapter
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
 import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurantsListResponse
+import kotlinx.android.synthetic.main.fragment_restaurant_list.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -35,6 +39,14 @@ class RestaurantListFragment : Fragment() {
         list.setHasFixedSize(true)
 
         return view
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        btn.setOnClickListener{_ ->
+            Log.i("restaurant list", "switching activity via button")
+            startActivity(Intent(context, SearchSettingsActivity::class.java))
+        }
     }
 
 
