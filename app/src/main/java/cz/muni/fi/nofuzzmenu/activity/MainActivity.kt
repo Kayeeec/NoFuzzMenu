@@ -55,7 +55,11 @@ class MainActivity : AppCompatActivity() {
                 Log.d("main", "started settings activity")
                 return true
             }
-            //R.id.action_settings -> true
+            R.id.action_settings -> {
+                startActivity(Intent(this, GeneralSettingsActivity::class.java))
+                Log.d("main", "started general settings activity")
+                return true
+            }
             else -> super.onOptionsItemSelected(item)
         }
     }

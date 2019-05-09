@@ -43,10 +43,6 @@ class RestaurantListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        btn.setOnClickListener{_ ->
-            Log.i("restaurant list", "switching activity via button")
-            startActivity(Intent(context, SearchSettingsActivity::class.java))
-        }
     }
 
 

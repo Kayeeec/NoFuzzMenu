@@ -2,4 +2,6 @@
     <string name="app_name">No Fuzz Menu</string>
     <string name="action_settings">Settings</string>
     <string name="action_search_settings">Search settings</string>
+    <string name="title_quick_settings">Quick settings</string>
+    <string name="title_general_settings">Settings</string>
 </resources>

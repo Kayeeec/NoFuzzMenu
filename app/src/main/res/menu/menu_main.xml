@@ -6,7 +6,7 @@
     <!-- "Quick Settings" icon for navigating to search settings -->
     <item
             android:id="@+id/action_search_settings"
-            android:icon="@drawable/crosshairs_gps"
+            android:icon="@drawable/ic_gps_fixed"
             android:title="@string/action_search_settings"
             app:showAsAction="ifRoom"/>
 
@@ -14,5 +14,6 @@
         android:id="@+id/action_settings"
         android:orderInCategory="100"
         android:title="@string/action_settings"
-        app:showAsAction="never" />
+        android:icon="@drawable/ic_settings"
+        app:showAsAction="ifRoom" />
 </menu>
