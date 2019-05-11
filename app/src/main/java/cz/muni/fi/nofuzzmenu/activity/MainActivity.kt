@@ -52,12 +52,10 @@ class MainActivity : AppCompatActivity() {
         return when (item.itemId) {
             R.id.action_search_settings -> {
                 startActivity(Intent(this, SearchSettingsActivity::class.java))
-                Log.d("main", "started settings activity")
                 return true
             }
             R.id.action_settings -> {
                 startActivity(Intent(this, GeneralSettingsActivity::class.java))
-                Log.d("main", "started general settings activity")
                 return true
             }
             else -> super.onOptionsItemSelected(item)
