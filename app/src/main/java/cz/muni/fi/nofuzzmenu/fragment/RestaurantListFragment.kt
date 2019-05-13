@@ -11,25 +11,22 @@ import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantsAdapter
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
-import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
-import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurantsListResponse
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import cz.muni.fi.nofuzzmenu.service.RestaurantFetchService
 import kotlin.collections.HashMap
 
 class RestaurantListFragment : Fragment() {
 
-    // TODO: move api key to some constants
-    private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1")
+
     private val adapter = RestaurantsAdapter(ArrayList())
     private var restaurants = ArrayList<RestaurantInfoDto>()
+    private lateinit var restaurantFetchingService: RestaurantFetchService
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_restaurant_list, container, false)
 
         val searchParameters = loadSavedParameters()
-        loadRestaurants(searchParameters)
+        restaurantFetchingService = RestaurantFetchService(0, 20, adapter)
+        restaurants.addAll(restaurantFetchingService.fetchRestaurants(searchParameters))
 
         val list = view.findViewById<RecyclerView>(android.R.id.list)
         list.layoutManager = LinearLayoutManager(context)
@@ -37,40 +34,6 @@ class RestaurantListFragment : Fragment() {
         list.setHasFixedSize(true)
 
         return view
-    }
-
-    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        super.onViewCreated(view, savedInstanceState)
-    }
-
-
-    /**
-     * Loads a list of nearby restaurants based on current settings.
-     */
-    private fun loadRestaurants(searchParameters: Map<String, String?>) {
-        // TODO: when we have more APIs, we'll need to sync the info
-        val call = zomatoApi.service.getRestaurants(
-            apiKey = zomatoApi.apiKey,
-            query = searchParameters["query"],
-            latitude = searchParameters["latitude"],
-            longitude = searchParameters["longitude"],
-            radius = searchParameters["radius"]?.toDouble(),
-            count = searchParameters["count"]?.toInt(),
-            cuisines = searchParameters["cuisines"], // TODO use list, put here as comma-separated list
-            sortBy = searchParameters["sortBy"],
-            sortOrder = searchParameters["sortOrder"]
-            )
-        call.enqueue(object : Callback<ZomatoRestaurantsListResponse> {
-
-            override fun onResponse(call: Call<ZomatoRestaurantsListResponse>, response: Response<ZomatoRestaurantsListResponse>) {
-                val body = response.body()
-                addRestaurants(body)
-            }
-
-            override fun onFailure(call: Call<ZomatoRestaurantsListResponse>, t: Throwable) {
-                t.printStackTrace()
-            }
-        })
     }
 
     private fun loadSavedParameters(): Map<String, String> {
@@ -83,18 +46,5 @@ class RestaurantListFragment : Fragment() {
             }
         }
         return result
-    }
-
-    private fun addRestaurants(response: ZomatoRestaurantsListResponse?) {
-        if (response == null) {
-            return
-        }
-
-        for (restaurant in response.restaurants) {
-            val r = restaurant.restaurant
-            restaurants.add(RestaurantInfoDto(r.name, r.location.address, r.url, r.cuisines, r.menu_url))
-        }
-
-        adapter.refresh(restaurants)
     }
 }
