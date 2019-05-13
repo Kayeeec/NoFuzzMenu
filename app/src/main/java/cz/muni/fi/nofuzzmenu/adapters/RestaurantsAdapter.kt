@@ -1,11 +1,16 @@
 package cz.muni.fi.nofuzzmenu.adapters
 
+import android.content.Intent
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.core.content.ContextCompat.startActivity
 import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
+import cz.muni.fi.nofuzzmenu.activity.RestaurantDetailActivity
+import cz.muni.fi.nofuzzmenu.activity.SearchSettingsActivity
 import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurant
 import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurantWrapper
 
@@ -31,6 +36,12 @@ class RestaurantsAdapter(private var restaurants: List<ZomatoRestaurant>) : Recy
      */
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(restaurants[position])
+        holder.itemView.setOnClickListener {
+            Log.d("restaurantAdapter", "restaurant click listener")
+            val intent: Intent = Intent(it.context, RestaurantDetailActivity::class.java)
+            intent.putExtra("Restaurant", restaurants[position])
+            it.context.startActivity(intent)
+        }
     }
 
     /**

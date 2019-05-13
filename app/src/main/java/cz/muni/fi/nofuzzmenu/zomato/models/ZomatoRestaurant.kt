@@ -1,8 +1,10 @@
 package cz.muni.fi.nofuzzmenu.zomato.models
 
-data class ZomatoRestaurant(val id: String,
+import java.io.Serializable
+
+data class ZomatoRestaurant(@Transient val id: String,
                             val name: String,
                             val url: String,
                             val location: ZomatoLocation,
                             val cuisines: String,
-                            val menu_url: String)
+                            val menu_url: String): Serializable

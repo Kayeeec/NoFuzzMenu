@@ -19,11 +19,6 @@
             app:popupTheme="@style/AppTheme.PopupOverlay" />
     </com.google.android.material.appbar.AppBarLayout>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:text="here will be restaurant detail"/>
-
     <!--include layout="@layout/content_general_settings" /-->
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
