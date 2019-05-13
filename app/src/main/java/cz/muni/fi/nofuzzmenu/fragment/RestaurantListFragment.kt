@@ -16,7 +16,7 @@ import kotlin.collections.HashMap
 
 class RestaurantListFragment : Fragment() {
 
-
+    // TODO: pagination https://stackoverflow.com/questions/16661662/how-to-implement-pagination-in-android-listview
     private val adapter = RestaurantsAdapter(ArrayList())
     private var restaurants = ArrayList<RestaurantInfoDto>()
     private lateinit var restaurantFetchingService: RestaurantFetchService
