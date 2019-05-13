@@ -1,9 +1,7 @@
 package cz.muni.fi.nofuzzmenu.fragment
 
-import android.content.Intent
 import android.os.Bundle
 import android.preference.PreferenceManager
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,11 +9,10 @@ import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
-import cz.muni.fi.nofuzzmenu.activity.SearchSettingsActivity
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantsAdapter
+import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
 import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurantsListResponse
-import kotlinx.android.synthetic.main.fragment_restaurant_list.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -26,6 +23,7 @@ class RestaurantListFragment : Fragment() {
     // TODO: move api key to some constants
     private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1")
     private val adapter = RestaurantsAdapter(ArrayList())
+    private var restaurants = ArrayList<RestaurantInfoDto>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         val view = inflater.inflate(R.layout.fragment_restaurant_list, container, false)
@@ -66,7 +64,7 @@ class RestaurantListFragment : Fragment() {
 
             override fun onResponse(call: Call<ZomatoRestaurantsListResponse>, response: Response<ZomatoRestaurantsListResponse>) {
                 val body = response.body()
-                populateList(body)
+                addRestaurants(body)
             }
 
             override fun onFailure(call: Call<ZomatoRestaurantsListResponse>, t: Throwable) {
@@ -87,11 +85,16 @@ class RestaurantListFragment : Fragment() {
         return result
     }
 
-    private fun populateList(response: ZomatoRestaurantsListResponse?) {
+    private fun addRestaurants(response: ZomatoRestaurantsListResponse?) {
         if (response == null) {
             return
         }
 
-        adapter.refresh(response.restaurants)
+        for (restaurant in response.restaurants) {
+            val r = restaurant.restaurant
+            restaurants.add(RestaurantInfoDto(r.name, r.location.address, r.url, r.cuisines, r.menu_url))
+        }
+
+        adapter.refresh(restaurants)
     }
 }

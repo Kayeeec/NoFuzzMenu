@@ -10,7 +10,7 @@ class ZomatoApi(val apiKey: String) {
     val service: ZomatoApiService
 
     companion object {
-        const val protocol = "http://"
+        const val protocol = "https://"
         const val hostname = "developers.zomato.com"
         const val apiVersion = "api/v2.1"
     }

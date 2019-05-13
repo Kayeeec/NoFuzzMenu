@@ -7,12 +7,11 @@ import android.os.PersistableBundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import cz.muni.fi.nofuzzmenu.R
-import cz.muni.fi.nofuzzmenu.fragment.SearchSettingsFragment
-import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurant
+import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 
 class RestaurantDetailActivity() : AppCompatActivity(), Parcelable {
 
-    private var restaurant: ZomatoRestaurant? = null
+    private var restaurant: RestaurantInfoDto? = null
 
     constructor(parcel: Parcel) : this() {
 
@@ -23,7 +22,7 @@ class RestaurantDetailActivity() : AppCompatActivity(), Parcelable {
         setContentView(R.layout.activity_restaurant_detail)
         Log.d("rd_activity", "before fragment")
 
-        restaurant = intent.getSerializableExtra("Restaurant") as ZomatoRestaurant
+        restaurant = intent.getSerializableExtra("Restaurant") as RestaurantInfoDto
 
         Log.d("loaded restaurant", printRestaurant(restaurant!!))
 
@@ -38,8 +37,8 @@ class RestaurantDetailActivity() : AppCompatActivity(), Parcelable {
         Log.d("rd_activity", "after fragment")
     }
 
-    private fun printRestaurant(restaurant: ZomatoRestaurant): String {
-        return "${restaurant.name}, ${restaurant.id}, ${restaurant.menu_url}"
+    private fun printRestaurant(restaurant: RestaurantInfoDto): String {
+        return "${restaurant.name}, ${restaurant.menu_url}"
     }
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
