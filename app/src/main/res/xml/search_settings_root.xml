@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <androidx.preference.SeekBarPreference
+            app:key="radius"
+            app:title="Radius"
+            app:summary="Specify restaurant search radius"
+            android:min="200"
+            android:max="2000"/>
+    <!--TODO: style the seek bar so that higher numbers show full, and possibly make larger steps (50 meters?)-->
+
+    <!--Preference
+        app:key="location"
+        app:title="starting location">
+        <fragment
+            class="cz.muni.fi.nofuzzmenu.fragment.MapFragment"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"/>
+    </Preference-->
+
+    <Preference
+        app:key="location"
+        app:title="starting location">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="cz.muni.fi.nofuzzmenu"
+            android:targetClass="cz.muni.fi.nofuzzmenu.activity.LocationPickActivity" />
+    </Preference>
+</androidx.preference.PreferenceScreen>
