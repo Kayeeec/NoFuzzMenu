@@ -41,6 +41,7 @@
                 android:id="@+id/detail_address"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_marginVertical="8dp"
+                android:drawableLeft="@drawable/ic_place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Baker Street, Longon, 152 63 United Airlines" />

@@ -55,7 +55,7 @@ class RestaurantMenuAdapter(private var menus: List<MenuItemDto>) : RecyclerView
 
         fun bind(menuItem: MenuItemDto) {
             // thumbnail todo
-            name.text = menuItem.name //todo format
+            name.text = "" + (adapterPosition + 1) + ". " + menuItem.name //todo format
             cost.text = menuItem.cost.toString() //todo format
         }
     }

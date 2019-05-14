@@ -20,6 +20,7 @@ import java.net.URLEncoder
 
 /**
  * A placeholder fragment containing a simple view.
+ * todo add up-down drag to reload menu?
  */
 class RestaurantDetailFragment : Fragment() {
 
