@@ -15,6 +15,7 @@ import com.google.android.material.button.MaterialButton
 import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.activity.RestaurantDetailActivity
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantMenuAdapter
+import cz.muni.fi.nofuzzmenu.dto.view.MenuItemDto
 import java.net.URLEncoder
 
 /**
@@ -40,7 +41,14 @@ class RestaurantDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         val restaurantActivity = activity as RestaurantDetailActivity
         val restaurant = restaurantActivity.getRestaurant()
-        val menu = restaurantActivity.getMenu()
+
+        // todo menu load
+        val menus = listOf(
+            MenuItemDto(name="Guláš segedýnský", cost = "90.50 Kč"),
+            MenuItemDto(name="Rajská se sekanou", cost = "80 Kč"),
+            MenuItemDto(name="Ravioli", cost = "150 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč")
+        )
 
         val name = view?.findViewById<TextView>(R.id.name)
         name?.text = restaurant?.name
@@ -67,7 +75,7 @@ class RestaurantDetailFragment : Fragment() {
         list?.adapter = adapter
         list?.setHasFixedSize(true)
 
-        menu?.menus?.let { adapter.refresh(it.toList()) }
+        menus.let { adapter.refresh(it.toList()) }
     }
 
     private fun refreshMenuList(response: String?) {
