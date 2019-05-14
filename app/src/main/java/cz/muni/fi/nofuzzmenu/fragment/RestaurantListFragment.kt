@@ -47,17 +47,4 @@ class RestaurantListFragment : Fragment() {
         }
         return result
     }
-
-    private fun addRestaurants(response: ZomatoRestaurantsListResponse?) {
-        if (response == null) {
-            return
-        }
-
-        for (restaurant in response.restaurants) {
-            val r = restaurant.restaurant
-            restaurants.add(RestaurantInfoDto(r.name, r.location.address, r.cuisines))
-        }
-
-        adapter.refresh(restaurants)
-    }
 }
