@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".fragment.RestaurantDetailFragment"
+    tools:showIn="@layout/activity_restaurant_detail"
+    android:orientation="vertical">
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/TextAppearance.MaterialComponents.Headline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Restaurant Name" />
+
+            <TextView
+                android:id="@+id/detail_cuisines"
+                style="@style/TextAppearance.MaterialComponents.Subtitle1"
+                android:textColor="@color/common_google_signin_btn_text_light_default"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/label_cuisines" />
+
+            <TextView
+                android:id="@+id/detail_address"
+                style="@style/TextAppearance.AppCompat.Body1"
+                android:layout_marginVertical="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Baker Street, Longon, 152 63 United Airlines" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/navigate_btn"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_near_me_black"
+                android:text="@string/navigate"/>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="horizontal">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/web_btn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_marginRight="4dp"
+                    android:enabled="false"
+                    android:layout_height="wrap_content"
+                    app:icon="@drawable/ic_globe"
+                    android:layout_weight="1"
+                    android:text="@string/web"/>
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/menu_web_btn"
+                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+                    android:layout_width="0dp"
+                    android:layout_marginLeft="4dp"
+                    android:layout_height="wrap_content"
+                    android:enabled="false"
+                    app:icon="@drawable/ic_open_in_new"
+                    android:layout_weight="1"
+                    android:text="@string/menu_web"/>
+
+            </LinearLayout>
+        </LinearLayout>
+    </com.google.android.material.card.MaterialCardView>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.CardView"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:padding="8dp"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/restaurantDetailMenuHeader"
+                style="@style/CardHeader6"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/todays_menu" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/restaurant_detail_menu_items"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </LinearLayout>
+
+
+    </com.google.android.material.card.MaterialCardView>
+
+</LinearLayout>

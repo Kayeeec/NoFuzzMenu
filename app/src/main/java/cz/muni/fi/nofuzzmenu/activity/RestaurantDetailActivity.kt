@@ -1,62 +1,45 @@
 package cz.muni.fi.nofuzzmenu.activity
 
 import android.os.Bundle
-import android.os.Parcel
-import android.os.Parcelable
-import android.os.PersistableBundle
 import android.util.Log
-import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity;
 import cz.muni.fi.nofuzzmenu.R
-import cz.muni.fi.nofuzzmenu.fragment.SearchSettingsFragment
-import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoRestaurant
+import cz.muni.fi.nofuzzmenu.dto.view.MenuItemDto
+import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
+import cz.muni.fi.nofuzzmenu.dto.view.RestaurantMenuDto
+import cz.muni.fi.nofuzzmenu.fragment.RestaurantDetailFragment
+import kotlinx.android.synthetic.main.item_restaurant.*
 
-class RestaurantDetailActivity() : AppCompatActivity(), Parcelable {
+class RestaurantDetailActivity : AppCompatActivity() {
 
-    private var restaurant: ZomatoRestaurant? = null
+    private var restaurant: RestaurantInfoDto? = null
+    private var menu: RestaurantMenuDto? = null
 
-    constructor(parcel: Parcel) : this() {
-
-    }
-
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        Log.d(RestaurantDetailActivity::class.java.simpleName,  "onCreate(...)")
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant_detail)
-        Log.d("rd_activity", "before fragment")
 
-        restaurant = intent.getSerializableExtra("Restaurant") as ZomatoRestaurant
+        restaurant = intent.getSerializableExtra("Restaurant") as RestaurantInfoDto
+        title = restaurant?.name
 
-        Log.d("loaded restaurant", printRestaurant(restaurant!!))
-
-        /*
-        supportFragmentManager
-            .beginTransaction()
-            .replace(android.R.id.content, SearchSettingsFragment())
-            .commit()
-
-
-*/
-        Log.d("rd_activity", "after fragment")
+        //todo: fetch menu info
+        menu = RestaurantMenuDto(
+            menus = setOf(
+                MenuItemDto(name="Guláš segedýnský", cost = 112.50),
+                MenuItemDto(name="Rajská se sekanou", cost = 50.50),
+                MenuItemDto(name="Ravioli", cost = 95.50),
+                MenuItemDto(name="Salát Caesar", cost = 33.50)
+            )
+        )
     }
 
-    private fun printRestaurant(restaurant: ZomatoRestaurant): String {
-        return "${restaurant.name}, ${restaurant.id}, ${restaurant.menu_url}"
+    fun getRestaurant(): RestaurantInfoDto? {
+        return restaurant
     }
 
-    override fun writeToParcel(parcel: Parcel, flags: Int) {
-
+    fun getMenu(): RestaurantMenuDto? {
+        return menu
     }
 
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    companion object CREATOR : Parcelable.Creator<RestaurantDetailActivity> {
-        override fun createFromParcel(parcel: Parcel): RestaurantDetailActivity {
-            return RestaurantDetailActivity(parcel)
-        }
-
-        override fun newArray(size: Int): Array<RestaurantDetailActivity?> {
-            return arrayOfNulls(size)
-        }
-    }
 }

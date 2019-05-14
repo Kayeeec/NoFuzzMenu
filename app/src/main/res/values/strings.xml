@@ -5,5 +5,14 @@
     <string name="title_quick_settings">Quick settings</string>
     <string name="title_general_settings">Settings</string>
     <string name="title_restaurant_detail">Restaurant</string>
+    <string name="title_activity_restaurant_detail2">RestaurantDetail2</string>
     <string name="title_activity_location_pick">Choose location</string>
+    <string name="label_cuisines">Quisines</string>
+    <string name="label_address">Address</string>
+    <string name="restaurant_info_header">Restaurant: </string>
+    <string name="navigate">Navigate</string>
+    <string name="web">Web</string>
+    <string name="menu_web">Menu Web</string>
+    <string name="restaurant_menu_header">Menu</string>
+    <string name="todays_menu">Today\'s Menu</string>
 </resources>
