@@ -9,5 +9,13 @@
             app:summary="Specify restaurant search radius"
             android:min="200"
             android:max="2000"/>
-    <!--TODO: style the seek bar so that higher numbers show full, and possibly make larger steps (50 meters?)-->
+    <!--TODO: style the seek bar so that higher numbers show full, and possibly make larger steps (50 meters?) -->
+    <Preference
+        app:key="location"
+        app:title="Set starting location">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="cz.muni.fi.nofuzzmenu"
+            android:targetClass="cz.muni.fi.nofuzzmenu.activity.LocationPickActivity" />
+    </Preference>
 </androidx.preference.PreferenceScreen>
