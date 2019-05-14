@@ -65,10 +65,6 @@ class MainActivity : AppCompatActivity() {
                 startActivity(Intent(this, SearchSettingsActivity::class.java))
                 return true
             }
-            R.id.action_settings -> {
-                startActivity(Intent(this, GeneralSettingsActivity::class.java))
-                return true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }

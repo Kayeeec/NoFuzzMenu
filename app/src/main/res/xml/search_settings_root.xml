@@ -3,6 +3,12 @@
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <androidx.preference.SwitchPreference
+        app:key="download_images"
+        app:title="Download Images"
+        app:summary="Choosing not to download images could reduce data usage."
+        android:defaultValue="false"/>
+
     <androidx.preference.SeekBarPreference
             app:key="radius"
             app:title="Radius"

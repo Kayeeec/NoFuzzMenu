@@ -47,10 +47,7 @@
             android:name=".activity.SearchSettingsActivity"
             android:label="@string/title_quick_settings"
             android:parentActivityName=".activity.MainActivity" />
-        <activity
-            android:name=".activity.GeneralSettingsActivity"
-            android:label="@string/title_general_settings"
-            android:parentActivityName=".activity.MainActivity" />
+
         <activity
             android:name=".activity.RestaurantDetailActivity"
             android:label="@string/title_restaurant_detail"
