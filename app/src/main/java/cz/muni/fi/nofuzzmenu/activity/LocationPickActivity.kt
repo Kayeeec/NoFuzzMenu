@@ -16,40 +16,65 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.location.Location
 import androidx.appcompat.app.AlertDialog
-import android.location.LocationListener
 import android.net.Uri
 import android.provider.Settings
 import android.util.Log
 import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.*
 
-class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback {
+class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
 
     companion object {
         const val LOCATION_PERMISSION = 10
-        const val TAG = "Location pick activiry"
+        const val TAG = "Location pick activity"
     }
 
     private lateinit var mMap: GoogleMap
-    private val manager = getSystemService( Context.LOCATION_SERVICE ) as LocationManager
+    private lateinit var mLocationRequest: LocationRequest
+    private lateinit var locationCallback: LocationCallback
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
     var currentLocation: Location = Location(LocationManager.GPS_PROVIDER)
+    var defaultLocation: Location = Location(LocationManager.GPS_PROVIDER)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_pick)
+        setDefaultLocation()
 
-        // check if GPS is on
-        if ( !manager.isProviderEnabled( LocationManager.GPS_PROVIDER ) ) {
-            buildAlertMessageNoGps()
-        }
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-           requestLocationPermission()
+        mLocationRequest = LocationRequest.create()
+            .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
+            .setInterval(60 * 1000)
+            .setFastestInterval(30 * 1000)
+
+        // from: https://developer.android.com/training/location/receive-location-updates.html
+        locationCallback = object : LocationCallback() {
+            override fun onLocationResult(locationResult: LocationResult?) {
+                locationResult ?: return
+                for (location in locationResult.locations){
+                    Log.d(TAG, "Handling location update callback: setting location to $location")
+                    currentLocation = location
+                    val startingLocation = LatLng(currentLocation.latitude, currentLocation.longitude)
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startingLocation, 5f))
+                    // TODO: after first receive, unsubscribe, subscribe in onResume
+                    // TODO: add recenter button
+                }
+            }
         }
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
+        // TODO (priority): save lat, lon to shared Prefs ... when?
+    }
+
+    override fun onStart() {
+        super.onStart()
+        setStartingLocation()
+        Log.d(TAG, "OnStart currentLocation: $currentLocation")
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
-        // TODO: save lat, lon to shared Prefs on marker select?
     }
 
     /**
@@ -65,38 +90,7 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback {
         mMap = googleMap
         // clear markers
         mMap.clear()
-
-        val startingLocation = LatLng(currentLocation.latitude, currentLocation.longitude)
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(startingLocation))
-    }
-
-    private fun buildAlertMessageNoGps() {
-        val builder = AlertDialog.Builder(this)
-        builder.setMessage("Your GPS seems to be disabled, do you want to enable it?")
-            .setCancelable(false)
-            .setPositiveButton("Yes")
-                { _, _ -> startActivity(Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS)) }
-            .setNegativeButton("No") { dialog, _ -> dialog.cancel() }
-        val alert = builder.create()
-        alert.show()
-    }
-
-    private val locationListener = object : LocationListener {
-        override fun onLocationChanged(location: Location) {
-            currentLocation = location
-        }
-
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-            // NO-OP
-        }
-
-        override fun onProviderEnabled(provider: String?) {
-            //NO-OP
-        }
-
-        override fun onProviderDisabled(provider: String?) {
-            //NO-OP
-        }
+        // Don't set any camera view here, as this method is called very early
     }
 
     private fun requestLocationPermission() {
@@ -123,23 +117,25 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback {
                     // can work with location now
                     Log.i(TAG, "Location permission granted")
                     if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-                        currentLocation = manager.getLastKnownLocation(LocationManager.GPS_PROVIDER)
-                        manager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 5f, locationListener)
-                    } else {
-                        setDefaultLocation()
+                        fusedLocationClient.requestLocationUpdates(mLocationRequest, locationCallback, null)
+                        fusedLocationClient.lastLocation
+                            .addOnSuccessListener { location : Location? ->
+                                Log.d(TAG, "Setting current location to $location")
+                                currentLocation = location ?: defaultLocation
+                            }
                     }
                 } else {
                     // current location unavailable, use default
                     Log.d("location pick", "Location permission not granted, using default of 0,0")
-                    setDefaultLocation()
+                    currentLocation = defaultLocation
                 }
             }
         }
     }
 
     private fun setDefaultLocation() {
-        currentLocation.latitude = 0.0
-        currentLocation.longitude = 0.0
+        defaultLocation.latitude = 0.0
+        defaultLocation.longitude = 0.0
     }
 
     private fun showLocationPermissionRationale(context: Context) {
@@ -158,6 +154,20 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback {
         }
         val alert = alertBuilder.create()
         alert.show()
+    }
+
+    private fun setStartingLocation() {
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestLocationPermission()
+        } else {
+            Log.d(TAG, "Fine location granted, getting last location")
+            fusedLocationClient.requestLocationUpdates(mLocationRequest, locationCallback, null)
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location : Location? ->
+                    currentLocation = location ?: defaultLocation
+                    Log.d(TAG, "Set current location to $currentLocation (location was $location)")
+                }
+        }
     }
 
 }
