@@ -1,24 +1,19 @@
 package cz.muni.fi.nofuzzmenu.activity
 
 import android.os.Bundle
-import android.os.PersistableBundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import cz.muni.fi.nofuzzmenu.R
-import cz.muni.fi.nofuzzmenu.fragment.SearchSettingsFragment
+import cz.muni.fi.nofuzzmenu.fragment.GeneralSettingsFragment
 
 class GeneralSettingsActivity : AppCompatActivity() {
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_general_settings)
-        Log.d("ss_activity", "before fragment")
-        /*
+
         supportFragmentManager
             .beginTransaction()
-            .replace(android.R.id.content, SearchSettingsFragment())
+            .replace(android.R.id.content, GeneralSettingsFragment())
             .commit()
-*/
-        Log.d("ss_activity", "after fragment")
     }
 }

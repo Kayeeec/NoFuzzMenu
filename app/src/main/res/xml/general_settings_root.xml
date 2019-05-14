@@ -1,15 +1,3 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
-
-    <Preference
-            app:key="foo"
-            app:title="title"
-    />
-
-    <androidx.preference.SeekBarPreference
-            app:key="radius"
-            app:title="Radius"
-            app:summary="Specify restaurant search radius"/>
-
-</androidx.preference.PreferenceScreen>
+<androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"/>
