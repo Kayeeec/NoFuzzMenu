@@ -16,6 +16,7 @@ import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.activity.RestaurantDetailActivity
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantMenuAdapter
 import cz.muni.fi.nofuzzmenu.dto.view.MenuItemDto
+import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 import java.net.URLEncoder
 
 /**
@@ -64,9 +65,7 @@ class RestaurantDetailFragment : Fragment() {
 //        nav, web, menuweb btn todo
         val webBtn = view?.findViewById<MaterialButton>(R.id.web_btn)
         val navBtn = view?.findViewById<MaterialButton>(R.id.navigate_btn)
-        val menuWebBtn = view?.findViewById<MaterialButton>(R.id.menu_web_btn)
-        setWebsiteLinkBtn(restaurant?.web, webBtn)
-        setWebsiteLinkBtn(restaurant?.menu_url, menuWebBtn)
+        setGoogleSearchLinkBtn(restaurant, webBtn)
         setNavigationBtn(restaurant?.address, navBtn)
 
 
@@ -101,14 +100,14 @@ class RestaurantDetailFragment : Fragment() {
         return Uri.parse(url)
     }
 
-    private fun setWebsiteLinkBtn(url: String?, button: MaterialButton?){
-        if (!url.isNullOrBlank() && button != null){
-            button.isEnabled = true
-            button.setOnClickListener {
-                val parseUri = parseUri(url)
-                Log.d("RestauranteDetailFragment.setWebsiteLink.parseUri: ", parseUri.toString())
-                startActivity(Intent(Intent.ACTION_VIEW, parseUri))
-            }
+    private fun setGoogleSearchLinkBtn(restaurant: RestaurantInfoDto?, button: MaterialButton?){
+        if (restaurant == null || button == null) return
+        val query = URLEncoder.encode("${restaurant.name} ${restaurant.address}", "utf-8")
+        val searchQuery = "http://www.google.com/#q=${query}"
+        button.isEnabled = true
+        val parseUri = parseUri(searchQuery)
+        button.setOnClickListener {
+            startActivity(Intent(Intent.ACTION_VIEW, parseUri))
         }
     }
 
