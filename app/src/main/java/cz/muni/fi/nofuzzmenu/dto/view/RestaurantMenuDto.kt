@@ -4,6 +4,6 @@ import java.io.Serializable
 
 data class RestaurantMenuDto(
     var menus: Set<MenuItemDto> = setOf(),
-    var restaurant: RestaurantInfoDto? = null
+    var currency: String
 ) : Serializable
 
