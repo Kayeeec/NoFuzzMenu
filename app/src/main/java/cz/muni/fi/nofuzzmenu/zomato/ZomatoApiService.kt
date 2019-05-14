@@ -40,10 +40,11 @@ interface ZomatoApiService {
         @Query("lat") latitude: String?,
         @Query("lon") longitude: String?,
         @Query("radius") radius: Double?, // does not work too well, will have to filter manually
-        @Query("count") count: Int?,
         @Query("cuisines") cuisines: String?, // comma-separated IDs
         @Query("sort") sortBy: String?, // TODO use enum, to string: cost, rating, real_distance (dist works well)
-        @Query("order") sortOrder: String? // asc/desc
+        @Query("order") sortOrder: String?, // asc/desc
+        @Query("start") start: Int?,
+        @Query("count") count: Int?
     ) : Call<ZomatoRestaurantsListResponse>
 
 

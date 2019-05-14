@@ -11,9 +11,8 @@ class SearchSettingsActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_search_settings)
 
-        supportFragmentManager
-            .beginTransaction()
-            .replace(android.R.id.content, SearchSettingsFragment())
+        supportFragmentManager.beginTransaction()
+            .replace(R.id.search_settings, SearchSettingsFragment())
             .commit()
     }
 }

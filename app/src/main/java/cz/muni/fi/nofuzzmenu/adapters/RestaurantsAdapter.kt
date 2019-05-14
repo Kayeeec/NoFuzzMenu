@@ -57,6 +57,7 @@ class RestaurantsAdapter(private var restaurants: List<RestaurantInfoDto>) : Rec
 
         var name: TextView = itemView.findViewById(R.id.name)
         var address: TextView = itemView.findViewById(R.id.address)
+        var distance: TextView = itemView.findViewById(R.id.distance)
 
         fun bind(restaurant: RestaurantInfoDto) {
             //val context = avatar.context
@@ -66,6 +67,8 @@ class RestaurantsAdapter(private var restaurants: List<RestaurantInfoDto>) : Rec
             //    .into(avatar)
             name.text = restaurant.name
             address.text = restaurant.address
+            Log.d("rest list adapter", distance.toString())
+            distance.text = restaurant.distance
         }
     }
 }
