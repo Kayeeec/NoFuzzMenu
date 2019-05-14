@@ -92,7 +92,7 @@ class RestaurantListFragment : Fragment() {
 
         for (restaurant in response.restaurants) {
             val r = restaurant.restaurant
-            restaurants.add(RestaurantInfoDto(r.name, r.location.address, r.url, r.cuisines, r.menu_url))
+            restaurants.add(RestaurantInfoDto(r.name, r.location.address, r.cuisines))
         }
 
         adapter.refresh(restaurants)

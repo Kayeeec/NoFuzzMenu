@@ -41,6 +41,7 @@
                 android:id="@+id/detail_address"
                 style="@style/TextAppearance.AppCompat.Body1"
                 android:layout_marginVertical="8dp"
+                android:drawableLeft="@drawable/ic_place"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Baker Street, Longon, 152 63 United Airlines" />
@@ -53,34 +54,16 @@
                 app:icon="@drawable/ic_near_me_black"
                 android:text="@string/navigate"/>
 
-            <LinearLayout
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/web_btn"
+                style="@style/Widget.MaterialComponents.Button.OutlinedButton"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="horizontal">
+                android:layout_marginRight="4dp"
+                android:enabled="false"
+                android:layout_height="wrap_content"
+                app:icon="@drawable/ic_search"
+                android:text="@string/search"/>
 
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/web_btn"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_marginRight="4dp"
-                    android:enabled="false"
-                    android:layout_height="wrap_content"
-                    app:icon="@drawable/ic_globe"
-                    android:layout_weight="1"
-                    android:text="@string/web"/>
-
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/menu_web_btn"
-                    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-                    android:layout_width="0dp"
-                    android:layout_marginLeft="4dp"
-                    android:layout_height="wrap_content"
-                    android:enabled="false"
-                    app:icon="@drawable/ic_open_in_new"
-                    android:layout_weight="1"
-                    android:text="@string/menu_web"/>
-
-            </LinearLayout>
         </LinearLayout>
     </com.google.android.material.card.MaterialCardView>
 
@@ -114,5 +97,7 @@
 
 
     </com.google.android.material.card.MaterialCardView>
+
+
 
 </LinearLayout>

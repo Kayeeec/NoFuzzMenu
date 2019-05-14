@@ -15,4 +15,5 @@
     <string name="menu_web">Menu Web</string>
     <string name="restaurant_menu_header">Menu</string>
     <string name="todays_menu">Today\'s Menu</string>
+    <string name="search">Search on Google</string>
 </resources>
