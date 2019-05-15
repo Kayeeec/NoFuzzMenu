@@ -19,20 +19,6 @@ class MainActivity : AppCompatActivity() {
 
         setSupportActionBar(toolbar)
 
-        /*
-        fab.setOnClickListener { view ->
-            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show()
-        }*/
-
-        // initialize restaurant view fragment
-        if (savedInstanceState == null) {
-            val fragmentManager = supportFragmentManager
-            fragmentManager.beginTransaction().replace(android.R.id.content,
-                RestaurantListFragment(),
-                RestaurantListFragment::class.java.simpleName).commit()
-        }
-
     }
 
     override fun onResume() {

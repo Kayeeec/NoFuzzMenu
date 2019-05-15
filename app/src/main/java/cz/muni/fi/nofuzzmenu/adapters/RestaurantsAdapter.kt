@@ -56,8 +56,8 @@ class RestaurantsAdapter(private var restaurants: List<RestaurantInfoDto>) : Rec
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
         var name: TextView = itemView.findViewById(R.id.name)
-        var address: TextView = itemView.findViewById(R.id.address)
         var distance: TextView = itemView.findViewById(R.id.distance)
+        var cuisines = itemView.findViewById<TextView>(R.id.cuisine)
 
         fun bind(restaurant: RestaurantInfoDto) {
             //val context = avatar.context
@@ -66,9 +66,9 @@ class RestaurantsAdapter(private var restaurants: List<RestaurantInfoDto>) : Rec
             //    .load(user.avatarUrl)
             //    .into(avatar)
             name.text = restaurant.name
-            address.text = restaurant.address
             Log.d("rest list adapter", distance.toString())
             distance.text = restaurant.distance
+            cuisines.text = restaurant.cuisines
         }
     }
 }
