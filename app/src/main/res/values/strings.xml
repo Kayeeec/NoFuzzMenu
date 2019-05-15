@@ -16,4 +16,5 @@
     <string name="restaurant_menu_header">Menu</string>
     <string name="todays_menu">Today\'s Menu</string>
     <string name="search">Search on Google</string>
+    <string name="menu_loading_message">Fetching today\'s menu...</string>
 </resources>
