@@ -64,7 +64,7 @@ class RestaurantFetchService(private val start: Int, private val count: Int, val
         for (restaurant in response.restaurants) {
             val r = restaurant.restaurant
             val endLocation = getLocation(r.location.latitude, r.location.longitude)
-            val distance = "" + startLocation.distanceTo(endLocation).toInt() + " m"
+            val distance = startLocation.distanceTo(endLocation)
             zomatoRestaurants.add(RestaurantInfoDto(r.name, r.location.address, r.cuisines, distance))
             adapter.refresh(zomatoRestaurants)
         }

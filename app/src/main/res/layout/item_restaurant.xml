@@ -36,12 +36,12 @@
 
             <TextView
                 android:id="@+id/distance"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="textEnd"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="bottom|end"
                 android:textStyle="bold"
-                tools:text="100 m" /> <!--TODO: style as bigger text, but faded-->
+                android:typeface="monospace"
+                tools:text="1000000000m" /> <!--TODO: style as bigger text, but faded-->
 
         </LinearLayout>
 

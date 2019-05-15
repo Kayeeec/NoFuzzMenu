@@ -14,7 +14,7 @@ import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 class RestaurantsAdapter(private var restaurants: List<RestaurantInfoDto>) : RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
 
     fun refresh(restaurants: List<RestaurantInfoDto>) {
-        this.restaurants = restaurants
+        this.restaurants = restaurants.sortedBy { it.distance }
         notifyDataSetChanged()
     }
 
@@ -67,7 +67,7 @@ class RestaurantsAdapter(private var restaurants: List<RestaurantInfoDto>) : Rec
             //    .into(avatar)
             name.text = restaurant.name
             Log.d("rest list adapter", distance.toString())
-            distance.text = restaurant.distance
+            distance.text = restaurant.distanceString
             cuisines.text = restaurant.cuisines
         }
     }

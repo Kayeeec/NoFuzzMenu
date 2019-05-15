@@ -84,7 +84,7 @@ class RestaurantDetailFragment : Fragment() {
         address?.text = restaurant?.address
 
         val distance = view?.findViewById<TextView>(R.id.detail_distance)
-        distance?.text = restaurant?.distance
+        distance?.text = restaurant?.distanceString
 
 //        nav, web, menuweb btn todo
         val webBtn = view?.findViewById<MaterialButton>(R.id.web_btn)
