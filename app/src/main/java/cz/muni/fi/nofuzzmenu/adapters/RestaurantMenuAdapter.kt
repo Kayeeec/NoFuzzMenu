@@ -50,13 +50,21 @@ class RestaurantMenuAdapter(private var menus: List<MenuItemDto>) : RecyclerView
      */
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
-        var name: TextView = itemView.findViewById(R.id.numbered_name)
-        var cost: TextView = itemView.findViewById(R.id.cost)
+        var number: TextView = itemView.findViewById(R.id.detail_item_number)
+        var name: TextView = itemView.findViewById(R.id.detail_item_name)
+        var cost: TextView = itemView.findViewById(R.id.detail_item_cost)
 
         fun bind(menuItem: MenuItemDto) {
             // thumbnail todo
-            name.text = "" + (adapterPosition + 1) + ". " + menuItem.name //todo format
+            number.text = formatItemNumber(adapterPosition)
+            name.text = menuItem.name //todo format
             cost.text = menuItem.cost.toString() //todo format
+        }
+
+        private fun formatItemNumber(adapterPosition: Int): String {
+            val index = adapterPosition + 1
+            if (index in 0..9) return " ${index}." //adds space before single digit line numbers
+            return "${index}."
         }
     }
 }

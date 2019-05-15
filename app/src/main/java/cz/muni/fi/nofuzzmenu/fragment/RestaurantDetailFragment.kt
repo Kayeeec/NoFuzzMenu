@@ -49,6 +49,27 @@ class RestaurantDetailFragment : Fragment() {
             MenuItemDto(name="Guláš segedýnský", cost = "90.50 Kč"),
             MenuItemDto(name="Rajská se sekanou", cost = "80 Kč"),
             MenuItemDto(name="Ravioli", cost = "150 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar longass name that should probably brak and make averything weird lorem ipsum sit amet dolor color sum nomer uno dos tres quatro sinco sicno seis you are pretty fly", cost = "10005 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
             MenuItemDto(name="Salát Caesar", cost = "15 Kč")
         )
 
@@ -61,6 +82,9 @@ class RestaurantDetailFragment : Fragment() {
 
         val address = view?.findViewById<TextView>(R.id.detail_address)
         address?.text = restaurant?.address
+
+        val distance = view?.findViewById<TextView>(R.id.detail_distance)
+        distance?.text = restaurant?.distance
 
 //        nav, web, menuweb btn todo
         val webBtn = view?.findViewById<MaterialButton>(R.id.web_btn)
