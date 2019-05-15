@@ -30,6 +30,10 @@ class RestaurantFetchService(private val start: Int, private val count: Int, val
         return zomatoRestaurants
     }
 
+    fun fetchMenuForRestaurant(){
+
+    }
+
     private fun fetchZomatoRestaurants(searchParameters: Map<String, String>) { //: List<ZomatoRestaurantWrapper>
         val call = zomatoApi.service.getRestaurants(
             apiKey = zomatoApi.apiKey,
@@ -61,13 +65,14 @@ class RestaurantFetchService(private val start: Int, private val count: Int, val
             return
         }
 
-        for (restaurant in response.restaurants) {
-            val r = restaurant.restaurant
+        response.restaurants.forEach {
+            val r = it.restaurant
             val endLocation = getLocation(r.location.latitude, r.location.longitude)
             val distance = startLocation.distanceTo(endLocation)
             zomatoRestaurants.add(RestaurantInfoDto(r.name, r.location.address, r.cuisines, distance))
-            adapter.refresh(zomatoRestaurants)
         }
+
+        adapter.refresh(zomatoRestaurants)
     }
 
     private fun getLocation(latitude: String, longitude: String): Location {
