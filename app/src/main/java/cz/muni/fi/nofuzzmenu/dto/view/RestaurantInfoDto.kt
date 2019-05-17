@@ -5,6 +5,7 @@ import java.text.NumberFormat
 import java.util.*
 
 data class RestaurantInfoDto(
+    var id: String,
     var name: String, //ok
     var address: String, // ok
     val cuisines: String?,

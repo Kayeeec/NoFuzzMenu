@@ -2,13 +2,16 @@ package cz.muni.fi.nofuzzmenu.fragment
 
 import android.content.Intent
 import android.net.Uri
-import androidx.fragment.app.Fragment
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.google.android.material.button.MaterialButton
@@ -17,61 +20,42 @@ import cz.muni.fi.nofuzzmenu.activity.RestaurantDetailActivity
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantMenuAdapter
 import cz.muni.fi.nofuzzmenu.dto.view.MenuItemDto
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
+import cz.muni.fi.nofuzzmenu.repository.DailyMenuRepository
+import kotlinx.coroutines.*
 import java.net.URLEncoder
+import kotlin.coroutines.CoroutineContext
 
 /**
  * A placeholder fragment containing a simple view.
  * todo add up-down drag to reload menu?
  */
 class RestaurantDetailFragment : Fragment() {
+    private val TAG = this::class.java.name
 
     private val adapter = RestaurantMenuAdapter(ArrayList())
+
+    private var liveMenus = MutableLiveData<MutableList<MenuItemDto>>()
+    private val coroutineContext: CoroutineContext
+        get() = Job() + Dispatchers.Default
+    private val scope = CoroutineScope(coroutineContext)
+    private val repository = DailyMenuRepository()
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        Log.d(RestaurantDetailFragment::class.java.simpleName,  "onCreateView(...)")
+        Log.d(TAG,  "onCreateView(...)")
         return inflater.inflate(R.layout.fragment_restaurant_detail, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        Log.d(RestaurantDetailFragment::class.java.simpleName,  "onViewCreated(...)")
+        Log.d(TAG,  "onViewCreated(...)")
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
         val restaurantActivity = activity as RestaurantDetailActivity
         val restaurant = restaurantActivity.getRestaurant()
-
-        // todo menu load
-        val menus = listOf(
-            MenuItemDto(name="Guláš segedýnský", cost = "90.50 Kč"),
-            MenuItemDto(name="Rajská se sekanou", cost = "80 Kč"),
-            MenuItemDto(name="Ravioli", cost = "150 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar longass name that should probably brak and make averything weird lorem ipsum sit amet dolor color sum nomer uno dos tres quatro sinco sicno seis you are pretty fly", cost = "10005 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-            MenuItemDto(name="Salát Caesar", cost = "15 Kč")
-        )
 
         val name = view?.findViewById<TextView>(R.id.name)
         name?.text = restaurant?.name
@@ -92,27 +76,68 @@ class RestaurantDetailFragment : Fragment() {
         setGoogleSearchLinkBtn(restaurant, webBtn)
         setNavigationBtn(restaurant?.address, navBtn)
 
-
 //        restaurant detail menu items
+        try {
+            loadMenu(restaurant)
+        } finally {
+            hideLoading()
+        }
+
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        cancelAllRequests()
+    }
+
+    fun cancelAllRequests() = coroutineContext.cancel()
+
+    private fun loadMenu(restaurant: RestaurantInfoDto?) {
+        hideNoDataText()
+        showLoading()
+        if (restaurant == null) {
+            Log.d(TAG, "no restaurant")
+            hideLoading()
+            showNoDataText()
+            return
+        }
         val list = view?.findViewById<RecyclerView>(R.id.restaurant_detail_menu_items)
         list?.layoutManager = LinearLayoutManager(context)
         list?.adapter = adapter
         list?.setHasFixedSize(true)
 
-        menus.let { adapter.refresh(it.toList()) }
-    }
-
-    private fun refreshMenuList(response: String?) {
-        if (response == null) {
-            return //todo: error toast + retry
+        scope.launch {
+            val menus = repository.getMenu(restaurant.id)
+            liveMenus.postValue(menus)
         }
-        // will consume response from used service and refresh the list
-//        adapter.refresh(menuItems)
+        liveMenus.observe(this, Observer { menus ->
+            if (menus.isNotEmpty()){
+                adapter.refresh(menus)
+                list?.visibility = View.VISIBLE
+            } else {
+                showNoDataText()
+            }
+        })
     }
 
-    private fun loadMenu(searchParameters: Map<String, String?>) {
-        // TODO: will use service to load menu and refresh the list
+    private fun showLoading() {
+        val loading = view?.findViewById<ProgressBar>(R.id.menu_loading)
+        loading?.visibility = View.VISIBLE
+    }
 
+    private fun hideLoading() {
+        val loading = view?.findViewById<ProgressBar>(R.id.menu_loading)
+        loading?.visibility = View.GONE
+    }
+
+    private fun showNoDataText() {
+        val noDataText = view?.findViewById<TextView>(R.id.no_data_message)
+        noDataText?.visibility = View.VISIBLE
+    }
+
+    private fun hideNoDataText() {
+        val noDataText = view?.findViewById<TextView>(R.id.no_data_message)
+        noDataText?.visibility = View.GONE
     }
 
     private fun parseUri(url: String): Uri {
@@ -147,6 +172,35 @@ class RestaurantDetailFragment : Fragment() {
         }
 
     }
+
+    //todo delete on done
+    private val mockMenu = listOf(
+        MenuItemDto(name="Guláš segedýnský", cost = "90.50 Kč"),
+        MenuItemDto(name="Rajská se sekanou", cost = "80 Kč"),
+        MenuItemDto(name="Ravioli", cost = "150 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar longass name that should probably brak and make averything weird lorem ipsum sit amet dolor color sum nomer uno dos tres quatro sinco sicno seis you are pretty fly", cost = "10005 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
+        MenuItemDto(name="Salát Caesar", cost = "15 Kč")
+    )
 
 
 }

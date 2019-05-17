@@ -100,10 +100,28 @@
                 android:layout_height="wrap_content"
                 android:text="@string/todays_menu" />
 
+            <ProgressBar
+                android:id="@+id/menu_loading"
+                android:visibility="visible"
+                android:layout_gravity="center|center"
+                style="?android:attr/progressBarStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent" />
+
+            <TextView
+                android:id="@+id/no_data_message"
+                android:text="Sorry. No data available."
+                android:visibility="gone"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
             <androidx.recyclerview.widget.RecyclerView
+                android:visibility="gone"
                 android:id="@+id/restaurant_detail_menu_items"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent" >
+
+            </androidx.recyclerview.widget.RecyclerView>
 
         </LinearLayout>
 

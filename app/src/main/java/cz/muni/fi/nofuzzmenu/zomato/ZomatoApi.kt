@@ -1,5 +1,6 @@
 package cz.muni.fi.nofuzzmenu.zomato
 
+import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import cz.muni.fi.nofuzzmenu.BuildConfig
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -30,6 +31,7 @@ class ZomatoApi(val apiKey: String) {
             .baseUrl("$protocol/$hostname/$apiVersion/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
+            .addCallAdapterFactory(CoroutineCallAdapterFactory())
             .build()
 
         service = retrofit.create(ZomatoApiService::class.java)
