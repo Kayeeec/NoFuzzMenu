@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -109,7 +110,7 @@
 
             <TextView
                 android:id="@+id/no_data_message"
-                android:text="Sorry. No data available."
+                android:text="@string/no_data_message"
                 android:visibility="invisible"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />

@@ -12,11 +12,10 @@ import java.util.*
 
 class DailyMenuRepository() : BaseRepository() {
     private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1") //todo api key storage
-    private val WORKING_D_MENU_RES_ID = "16506939" //todo remove after all tested
 
     suspend fun getMenu(restaurantId: String): MutableList<MenuItemDto> {
 
-//        val call = zomatoApi.service.getMenuAsync(apiKey = zomatoApi.apiKey, restaurantId = WORKING_D_MENU_RES_ID) //working menu display
+//        val call = zomatoApi.service.getMenuAsync(apiKey = zomatoApi.apiKey, restaurantId = "16506939") //working menu display
         val call = zomatoApi.service.getMenuAsync(apiKey = zomatoApi.apiKey, restaurantId = restaurantId)
 
         val response = safeApiCall(
@@ -30,8 +29,7 @@ class DailyMenuRepository() : BaseRepository() {
                 dailyMenu.dishes?.forEach {
                     val dish = it.dish
                     if (dish.name.isNotEmpty()){
-                        val dishPrice = if (dish.price.isBlank()) "-" else dish.price
-                        result.add(MenuItemDto(name = dish.name, cost = dishPrice))
+                        result.add(MenuItemDto(name = dish.name, cost = dish.price))
                     }
                 }
             }
@@ -48,7 +46,7 @@ class DailyMenuRepository() : BaseRepository() {
             return today in startDate..endDate
         }
         if (startDate == null && endDate == null){
-            return true // todo what to return, just include in the list? failed to parse?
+            return true // todo what to return? just include in the list? failed to parse? probably won't be null tho
         }
         if (startDate != null) return today.isEqual(startDate)
         return today.isEqual(endDate)

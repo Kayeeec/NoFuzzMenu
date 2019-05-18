@@ -8,19 +8,21 @@ import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 
 class RestaurantDetailActivity : AppCompatActivity() {
 
-    private var restaurant: RestaurantInfoDto? = null
+    private lateinit var restaurant: RestaurantInfoDto
 
     override fun onCreate(savedInstanceState: Bundle?) {
         Log.d(RestaurantDetailActivity::class.java.simpleName,  "onCreate(...)")
+
+        restaurant = intent.getSerializableExtra("Restaurant") as RestaurantInfoDto
+        title = restaurant.name
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_restaurant_detail)
 
-        restaurant = intent.getSerializableExtra("Restaurant") as RestaurantInfoDto
-        title = restaurant?.name
 
     }
 
-    fun getRestaurant(): RestaurantInfoDto? {
+    fun getRestaurant(): RestaurantInfoDto {
         return restaurant
     }
 }
