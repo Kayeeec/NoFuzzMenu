@@ -6,34 +6,59 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantsAdapter
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
-import cz.muni.fi.nofuzzmenu.service.RestaurantFetchService
-import kotlin.collections.HashMap
+import cz.muni.fi.nofuzzmenu.repository.RestaurantRepository
+import kotlinx.coroutines.*
+import kotlin.coroutines.CoroutineContext
 
 class RestaurantListFragment : Fragment() {
 
     // TODO: pagination https://stackoverflow.com/questions/16661662/how-to-implement-pagination-in-android-listview
     private val adapter = RestaurantsAdapter(ArrayList())
-    private var restaurants = ArrayList<RestaurantInfoDto>()
-    private lateinit var restaurantFetchingService: RestaurantFetchService
+    private var liveRestaurants = MutableLiveData<MutableList<RestaurantInfoDto>>()
+    private val coroutineContext: CoroutineContext
+        get() = Job() + Dispatchers.Default
+    private val scope = CoroutineScope(coroutineContext)
+    private val repository = RestaurantRepository()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        val view = inflater.inflate(R.layout.fragment_restaurant_list, container, false)
+        return inflater.inflate(R.layout.fragment_restaurant_list, container, false)
+    }
 
-        val searchParameters = loadSavedParameters()
-        restaurantFetchingService = RestaurantFetchService(0, 20, adapter)
-        restaurants.addAll(restaurantFetchingService.fetchRestaurants(searchParameters))
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
         val list = view.findViewById<RecyclerView>(android.R.id.list)
         list.layoutManager = LinearLayoutManager(context)
         list.adapter = adapter
         list.setHasFixedSize(true)
 
-        return view
+        loadRestaurants()
+    }
+
+    override fun onDestroy() { //todo right?
+        super.onDestroy()
+        cancelAllRequests()
+    }
+
+    private fun loadRestaurants() {
+        val searchParameters = loadSavedParameters()
+
+        scope.launch {
+            val restaurants = repository.getRestaurants(searchParameters)
+            liveRestaurants.postValue(restaurants)
+        }
+
+        liveRestaurants.observe(this, Observer {restaurants ->
+            adapter.refresh(restaurants)
+        })
+
     }
 
     private fun loadSavedParameters(): Map<String, String> {
@@ -47,4 +72,6 @@ class RestaurantListFragment : Fragment() {
         }
         return result
     }
+
+    fun cancelAllRequests() = coroutineContext.cancel()
 }
