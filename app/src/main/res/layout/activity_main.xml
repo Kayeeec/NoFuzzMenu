@@ -21,6 +21,12 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
-    <include layout="@layout/content_main" />
+    <fragment
+        android:id="@+id/fragment"
+        android:name="cz.muni.fi.nofuzzmenu.fragment.RestaurantListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/fragment_restaurant_list" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

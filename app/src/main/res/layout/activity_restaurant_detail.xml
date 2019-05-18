@@ -6,6 +6,12 @@
     android:layout_height="match_parent"
     tools:context=".activity.RestaurantDetailActivity">
 
-    <include layout="@layout/content_restaurant_detail" />
+    <fragment
+        android:id="@+id/fragment"
+        android:name="cz.muni.fi.nofuzzmenu.fragment.RestaurantDetailFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        tools:layout="@layout/fragment_restaurant_detail" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
