@@ -73,8 +73,6 @@ class RestaurantListFragment : Fragment() {
 
         scope.launch {
             val restaurants = repository.getRestaurants(searchParameters)
-            // for some reason, Zomato api returns the restaurants in reverse order than specified
-            restaurants.reverse()
             liveRestaurants.postValue(restaurants)
         }
 

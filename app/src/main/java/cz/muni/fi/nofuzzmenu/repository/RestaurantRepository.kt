@@ -6,7 +6,7 @@ import cz.muni.fi.nofuzzmenu.BuildConfig
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
 
-class RestaurantRepository() : BaseRepository() {
+class RestaurantRepository : BaseRepository() {
     private val TAG = this.javaClass.name
     private val zomatoApi = ZomatoApi(BuildConfig.ZOMATO_API_KEY) //todo api key storage
     private val startLocation = Location("")
@@ -56,8 +56,8 @@ class RestaurantRepository() : BaseRepository() {
             longitude = parameters["longitude"],
             radius = parameters["radius"]?.toDouble(),
             cuisines = parameters["cuisines"], // TODO use list, put here as comma-separated list
-            sortBy = parameters["sortBy"],
-            sortOrder = parameters["sortOrder"],
+            sortBy = "real_distance",
+            sortOrder = "asc",
             start = start,
             count = count
         )
@@ -74,12 +74,12 @@ class RestaurantRepository() : BaseRepository() {
             // filtering has to be done manually, Zomato search does not filter
             val radius = parameters["radius"]?.toDouble()
             if (radius == null){
-                zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance))
+                zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance, r.price_range, r.user_rating.aggregate_rating))
             } else if (distance < radius) {
-                zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance))
+                zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance, r.price_range, r.user_rating.aggregate_rating))
             }
         }
-        return zomatoRestaurants
+        return sortRestaurants(parameters, zomatoRestaurants)
     }
 
     private fun resolveStartingLocation(parameters: Map<String, String>) {
@@ -102,4 +102,26 @@ class RestaurantRepository() : BaseRepository() {
         return location
     }
 
+    private fun sortRestaurants(parameters: Map<String, String>, restaurants: MutableList<RestaurantInfoDto>): MutableList<RestaurantInfoDto> {
+        val sortOrder = parameters["order"] ?: "asc"
+        val sortCriteria = parameters["sortBy"] ?: "real_distance"
+        val output = ArrayList(restaurants)
+        if (sortOrder == "asc") {
+            Log.d(TAG, "Sorting asc")
+            output.sortBy(sortFunctions.getValue(sortCriteria))
+        } else {
+            Log.d(TAG, "Sorting desc")
+            output.sortByDescending(sortFunctions.getValue(sortCriteria))
+        }
+
+        return output
+    }
+
+    companion object {
+        val sortFunctions = mapOf(
+            Pair("real_distance", {r:RestaurantInfoDto -> r.distance}),
+            Pair("cost", {r:RestaurantInfoDto -> r.price_range}),
+            Pair("rating", {r:RestaurantInfoDto -> r.rating})
+        )
+    }
 }

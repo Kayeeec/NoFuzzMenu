@@ -9,7 +9,9 @@ data class RestaurantInfoDto(
     var name: String, //ok
     var address: String, // ok
     val cuisines: String?,
-    val distance: Float  // distance in meters from the location used in the request, for sorting
+    val distance: Float,  // distance in meters from the location used in the request, for sorting
+    val price_range: Float, // price range categories
+    val rating: Float // aggregated user rating
 ): Serializable {
     var distanceString: String = "" // for display
      init {
