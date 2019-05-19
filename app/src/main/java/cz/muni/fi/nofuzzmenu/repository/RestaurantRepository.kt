@@ -71,7 +71,13 @@ class RestaurantRepository() : BaseRepository() {
             val r = it.restaurant
             val endLocation = getLocation(r.location.latitude, r.location.longitude)
             val distance = startLocation.distanceTo(endLocation)
-            zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance))
+            // filtering has to be done manually, Zomato search does not filter
+            val radius = parameters["radius"]?.toDouble()
+            if (radius == null){
+                zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance))
+            } else if (distance < radius) {
+                zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance))
+            }
         }
         return zomatoRestaurants
     }
