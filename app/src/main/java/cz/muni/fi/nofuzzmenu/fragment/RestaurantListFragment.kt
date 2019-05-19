@@ -1,7 +1,9 @@
 package cz.muni.fi.nofuzzmenu.fragment
 
+import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceManager
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -66,6 +68,8 @@ class RestaurantListFragment : Fragment() {
         list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
         val searchParameters = loadSavedParameters()
+        Log.d(TAG, "Loaded search parameters: $searchParameters")
+        // TODO?: overwrite restaurants on start location change
 
         scope.launch {
             val restaurants = repository.getRestaurants(searchParameters)
@@ -98,7 +102,6 @@ class RestaurantListFragment : Fragment() {
 
     private fun showLoading() {
         swipeRefreshLayout.isRefreshing = true
-
     }
 
     private fun loadSavedParameters(): Map<String, String> {
@@ -106,12 +109,10 @@ class RestaurantListFragment : Fragment() {
         val all = prefs.all
         val result = HashMap<String, String>()
         for (item in all) {
-            if (item.value !is String){
-                result[item.key] = item.value.toString()
-            }
+            result[item.key] = item.value.toString()
         }
         return result
     }
 
-    fun cancelAllRequests() = coroutineContext.cancel()
+    private fun cancelAllRequests() = coroutineContext.cancel()
 }
