@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="search_sort_options">
+        <item>real_distance</item>
+        <item>cost</item>
+        <item>rating</item>
+    </string-array>
+    <string-array name="search_sort_options_text">
+        <item>Real distance</item>
+        <item>Cost</item>
+        <item>Rating</item>
+    </string-array>
+    <string-array name="search_order_options">
+        <item>asc</item>
+        <item>desc</item>
+    </string-array>
+    <string-array name="search_order_options_text">
+        <item>Ascending</item>
+        <item>Descending</item>
+    </string-array>
+</resources>
