@@ -14,6 +14,7 @@
     <ListPreference
         app:key="sortBy"
         app:title="Sort results by"
+        android:defaultValue="real_distance"
         android:entries="@array/search_sort_options_text"
         android:entryValues="@array/search_sort_options"
         app:iconSpaceReserved="false"/>
@@ -21,6 +22,7 @@
     <ListPreference
         app:key="order"
         app:title="Sort order"
+        android:defaultValue="asc"
         android:entryValues="@array/search_order_options"
         android:entries="@array/search_order_options_text"
         app:iconSpaceReserved="false"/>

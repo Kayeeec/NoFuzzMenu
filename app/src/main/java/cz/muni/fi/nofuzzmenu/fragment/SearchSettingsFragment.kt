@@ -13,8 +13,14 @@ class SearchSettingsFragment: PreferenceFragmentCompat() {
     override fun onCreatePreferences(savedInstanceState: Bundle?, rootKey: String?) {
         setPreferencesFromResource(R.xml.search_settings_root, rootKey)
 
+        updatePreferenceSummaries()
+    }
+
+    private fun updatePreferenceSummaries() {
         val sortPreference = findPreference("sortBy") as androidx.preference.ListPreference
         val orderPreference = findPreference("order") as androidx.preference.ListPreference
+        sortPreference.summary = sortPreference.value
+        orderPreference.summary = orderPreference.value
         sortPreference.setOnPreferenceChangeListener { preference, newValue ->
             preference.summary = newValue.toString()
             true

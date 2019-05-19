@@ -66,11 +66,9 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
                     Log.d(TAG, "Handling location update callback: setting location to $location")
                     currentLocation = location
                     val startingLocation = LatLng(currentLocation.latitude, currentLocation.longitude)
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startingLocation, 12f))
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startingLocation, 17f))
                     fusedLocationClient.removeLocationUpdates(this)
                     Log.d(TAG, "Unsubscribed from location updates (callback)")
-                    // TODO: after first receive, unsubscribe, subscribe in onResume
-                    // TODO: add recenter button
                 }
             }
         }
@@ -140,7 +138,7 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
             // Placing a marker on the touched position
             googleMap.addMarker(markerOptions)
         }
-        // TODO: remove?
+
         if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
             mMap.isMyLocationEnabled = true
             mMap.uiSettings.isMyLocationButtonEnabled = true
