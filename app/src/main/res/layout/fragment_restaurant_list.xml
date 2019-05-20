@@ -1,12 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="8dp"
     android:orientation="vertical">
 
+        <ProgressBar
+            android:id="@+id/restaurants_loading"
+            android:translationZ="8dp"
+            android:layout_gravity="center|center"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent" />
+
+        <TextView
+            android:id="@+id/no_data_message"
+            android:text="@string/no_data_message"
+            android:visibility="invisible"
+            android:padding="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
         <androidx.recyclerview.widget.RecyclerView
+            android:visibility="invisible"
+            android:scrollbars="vertical"
             android:id="@android:id/list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"/>

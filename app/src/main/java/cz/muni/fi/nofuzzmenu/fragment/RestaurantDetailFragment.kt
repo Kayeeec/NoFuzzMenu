@@ -40,6 +40,8 @@ class RestaurantDetailFragment : Fragment() {
     private val scope = CoroutineScope(coroutineContext)
     private val repository = DailyMenuRepository()
 
+    private lateinit var restaurant: RestaurantInfoDto
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,39 +52,14 @@ class RestaurantDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG,  "onViewCreated(...)")
+
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-        val restaurantActivity = activity as RestaurantDetailActivity
-        val restaurant = restaurantActivity.getRestaurant()
-
-        val name = view?.findViewById<TextView>(R.id.name)
-        name?.text = restaurant?.name
-
-//        detail quisines , address
-        val cuisines = view?.findViewById<TextView>(R.id.detail_cuisines)
-        cuisines?.text = restaurant?.cuisines
-
-        val address = view?.findViewById<TextView>(R.id.detail_address)
-        address?.text = restaurant?.address
-
-        val distance = view?.findViewById<TextView>(R.id.detail_distance)
-        distance?.text = restaurant?.distanceString
-
-//        nav, web, menuweb btn todo
-        val webBtn = view?.findViewById<MaterialButton>(R.id.web_btn)
-        val navBtn = view?.findViewById<MaterialButton>(R.id.navigate_btn)
-        setGoogleSearchLinkBtn(restaurant, webBtn)
-        setNavigationBtn(restaurant?.address, navBtn)
-
-//        restaurant detail menu items
-        try {
-            loadMenu(restaurant)
-        } finally {
-            hideLoading()
-        }
-
+        getRestaurantFromActivity()
+        populateDetails()
+        loadMenu(restaurant)
     }
 
     override fun onDestroy() {
@@ -90,18 +67,46 @@ class RestaurantDetailFragment : Fragment() {
         cancelAllRequests()
     }
 
-    fun cancelAllRequests() = coroutineContext.cancel()
+    private fun populateDetails() {
+        val name = view?.findViewById<TextView>(R.id.name)
+        name?.text = restaurant.name
+
+        val cuisines = view?.findViewById<TextView>(R.id.detail_cuisines)
+        cuisines?.text = restaurant.cuisines
+
+        val address = view?.findViewById<TextView>(R.id.detail_address)
+        address?.text = restaurant.address
+
+        val distance = view?.findViewById<TextView>(R.id.detail_distance)
+        distance?.text = restaurant.distanceString
+
+        val webBtn = view?.findViewById<MaterialButton>(R.id.web_btn)
+        val navBtn = view?.findViewById<MaterialButton>(R.id.navigate_btn)
+        setGoogleSearchLinkBtn(restaurant, webBtn)
+        setNavigationBtn(restaurant.address, navBtn)
+    }
+
+    private fun getRestaurantFromActivity() {
+        val restaurantActivity = activity as RestaurantDetailActivity
+        restaurant = restaurantActivity.getRestaurant()
+    }
+
+    fun cancelAllRequests(){
+        Log.d(TAG, "Canceling all requests.")
+        coroutineContext.cancel()
+    }
 
     private fun loadMenu(restaurant: RestaurantInfoDto?) {
-        hideNoDataText()
         showLoading()
+        hideNoDataText()
+
         if (restaurant == null) {
             Log.d(TAG, "no restaurant")
-            hideLoading()
             showNoDataText()
             return
         }
         val list = view?.findViewById<RecyclerView>(R.id.restaurant_detail_menu_items)
+        list?.visibility = View.GONE
         list?.layoutManager = LinearLayoutManager(context)
         list?.adapter = adapter
         list?.setHasFixedSize(true)
@@ -110,34 +115,31 @@ class RestaurantDetailFragment : Fragment() {
             val menus = repository.getMenu(restaurant.id)
             liveMenus.postValue(menus)
         }
-        liveMenus.observe(this, Observer { menus ->
+        liveMenus.observe(this, Observer { menus -> //todo better error handling? try catch etc
             if (menus.isNotEmpty()){
                 adapter.refresh(menus)
                 list?.visibility = View.VISIBLE
             } else {
                 showNoDataText()
             }
+            hideLoading()
         })
     }
 
     private fun showLoading() {
-        val loading = view?.findViewById<ProgressBar>(R.id.menu_loading)
-        loading?.visibility = View.VISIBLE
+        view?.findViewById<ProgressBar>(R.id.menu_loading)?.visibility = View.VISIBLE
     }
 
     private fun hideLoading() {
-        val loading = view?.findViewById<ProgressBar>(R.id.menu_loading)
-        loading?.visibility = View.GONE
+        view?.findViewById<ProgressBar>(R.id.menu_loading)?.visibility = View.GONE
     }
 
     private fun showNoDataText() {
-        val noDataText = view?.findViewById<TextView>(R.id.no_data_message)
-        noDataText?.visibility = View.VISIBLE
+        view?.findViewById<TextView>(R.id.no_data_message)?.visibility = View.VISIBLE
     }
 
     private fun hideNoDataText() {
-        val noDataText = view?.findViewById<TextView>(R.id.no_data_message)
-        noDataText?.visibility = View.GONE
+        view?.findViewById<TextView>(R.id.no_data_message)?.visibility = View.GONE
     }
 
     private fun parseUri(url: String): Uri {
@@ -181,7 +183,7 @@ class RestaurantDetailFragment : Fragment() {
         MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
         MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
         MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar longass name that should probably brak and make averything weird lorem ipsum sit amet dolor color sum nomer uno dos tres quatro sinco sicno seis you are pretty fly", cost = "10005 Kč"),
+        MenuItemDto(name="Salát Caesar longass name that should probably brake and make everything weird lorem ipsum sit amet dolor color sum nomer uno dos tres quatro sinco sicno seis you are pretty fly", cost = "10005 Kč"),
         MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
         MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
         MenuItemDto(name="Salát Caesar", cost = "15 Kč"),

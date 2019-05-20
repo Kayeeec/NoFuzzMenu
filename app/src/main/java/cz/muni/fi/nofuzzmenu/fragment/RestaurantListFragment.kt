@@ -5,9 +5,12 @@ import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ProgressBar
+import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
@@ -34,20 +37,25 @@ class RestaurantListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val list = view.findViewById<RecyclerView>(android.R.id.list)
-        list.layoutManager = LinearLayoutManager(context)
-        list.adapter = adapter
-        list.setHasFixedSize(true)
-
-        loadRestaurants()
+        loadRestaurants(view)
     }
 
-    override fun onDestroy() { //todo right?
+    override fun onDestroy() { //todo is this right?
         super.onDestroy()
         cancelAllRequests()
     }
 
-    private fun loadRestaurants() {
+    private fun loadRestaurants(view: View) {
+        showLoading()
+        hideNoDataText()
+
+        val list = view.findViewById<RecyclerView>(android.R.id.list)
+        list.visibility = View.GONE
+        list.layoutManager = LinearLayoutManager(context)
+        list.adapter = adapter
+        list.setHasFixedSize(true)
+        list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+
         val searchParameters = loadSavedParameters()
 
         scope.launch {
@@ -56,9 +64,31 @@ class RestaurantListFragment : Fragment() {
         }
 
         liveRestaurants.observe(this, Observer {restaurants ->
-            adapter.refresh(restaurants)
+            if (restaurants.isNotEmpty()){
+                adapter.refresh(restaurants)
+                list.visibility = View.VISIBLE
+            } else {
+                showNoDataText()
+            }
+            hideLoading()
         })
 
+    }
+
+    private fun showNoDataText() {
+        view?.findViewById<TextView>(R.id.no_data_message)?.visibility = View.VISIBLE
+    }
+
+    private fun hideNoDataText() {
+        view?.findViewById<TextView>(R.id.no_data_message)?.visibility = View.GONE
+    }
+
+    private fun hideLoading() {
+        view?.findViewById<ProgressBar>(R.id.restaurants_loading)?.visibility = View.GONE
+    }
+
+    private fun showLoading() {
+        view?.findViewById<ProgressBar>(R.id.restaurants_loading)?.visibility = View.VISIBLE
     }
 
     private fun loadSavedParameters(): Map<String, String> {

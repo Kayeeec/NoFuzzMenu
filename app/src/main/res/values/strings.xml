@@ -17,4 +17,5 @@
     <string name="todays_menu">Today\'s Menu</string>
     <string name="search">Search on Google</string>
     <string name="menu_loading_message">Fetching today\'s menu...</string>
+    <string name="no_data_message">Sorry. No data available.</string>
 </resources>

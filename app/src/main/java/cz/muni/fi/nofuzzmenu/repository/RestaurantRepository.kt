@@ -27,7 +27,6 @@ class RestaurantRepository() : BaseRepository() {
             start = start,
             count = count
         )
-
         val zomatoResponse = safeApiCall(
             call = { call.await() },
             errorMessage = "Error fetching restaurants from zomato."
