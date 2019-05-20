@@ -10,6 +10,7 @@ import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
@@ -53,6 +54,7 @@ class RestaurantListFragment : Fragment() {
         list.layoutManager = LinearLayoutManager(context)
         list.adapter = adapter
         list.setHasFixedSize(true)
+        list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
         val searchParameters = loadSavedParameters()
 
