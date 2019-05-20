@@ -42,18 +42,20 @@
             <TextView
                 android:id="@+id/detail_distance"
                 android:drawableStart="@drawable/ic_straighten_black_20dp"
-                android:drawablePadding="2dp"
+                android:drawablePadding="8dp"
                 android:paddingStart="2dp"
+                android:paddingEnd="2dp"
                 android:textStyle="bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="100 m"
+                android:text="800 m"
                 />
 
             <TextView
                 android:id="@+id/detail_address"
                 style="@style/TextAppearance.MaterialComponents.Body2"
                 android:drawableStart="@drawable/ic_place"
+                android:drawablePadding="6dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="Baker Street, Longon, 152 63 United Airlines" />
@@ -95,15 +97,13 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:isScrollContainer="true"
-            android:fadeScrollbars="false"
             android:scrollbarAlwaysDrawVerticalTrack="true"
-            android:padding="8dp"
             android:orientation="vertical">
 
             <TextView
                 android:id="@+id/restaurantDetailMenuHeader"
                 style="@style/CardHeader6"
+                android:padding="8dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/todays_menu" />
@@ -118,6 +118,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:visibility="invisible"
                 android:id="@+id/restaurant_detail_menu_items"
+                android:scrollbars="vertical"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" >
 
