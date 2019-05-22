@@ -7,13 +7,13 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.android.material.button.MaterialButton
 import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.activity.RestaurantDetailActivity
@@ -25,10 +25,7 @@ import kotlinx.coroutines.*
 import java.net.URLEncoder
 import kotlin.coroutines.CoroutineContext
 
-/**
- * A placeholder fragment containing a simple view.
- * todo add up-down drag to reload menu?
- */
+
 class RestaurantDetailFragment : Fragment() {
     private val TAG = this::class.java.name
 
@@ -41,6 +38,7 @@ class RestaurantDetailFragment : Fragment() {
     private val repository = DailyMenuRepository()
 
     private lateinit var restaurant: RestaurantInfoDto
+    private var swipeRefreshLayout: SwipeRefreshLayout? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -59,6 +57,14 @@ class RestaurantDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         getRestaurantFromActivity()
         populateDetails()
+
+        swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout?.setOnRefreshListener {
+            loadMenu(restaurant)
+        }
+        swipeRefreshLayout?.setColorSchemeResources(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4)
+        loadMenu(restaurant)
+
         loadMenu(restaurant)
     }
 
@@ -101,7 +107,6 @@ class RestaurantDetailFragment : Fragment() {
         hideNoDataText()
 
         if (restaurant == null) {
-            Log.d(TAG, "no restaurant")
             showNoDataText()
             return
         }
@@ -127,11 +132,11 @@ class RestaurantDetailFragment : Fragment() {
     }
 
     private fun showLoading() {
-        view?.findViewById<ProgressBar>(R.id.menu_loading)?.visibility = View.VISIBLE
+        swipeRefreshLayout?.isRefreshing = true
     }
 
     private fun hideLoading() {
-        view?.findViewById<ProgressBar>(R.id.menu_loading)?.visibility = View.GONE
+        swipeRefreshLayout?.isRefreshing = false
     }
 
     private fun showNoDataText() {

@@ -5,7 +5,6 @@ import android.preference.PreferenceManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.MutableLiveData
@@ -13,6 +12,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantsAdapter
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
@@ -20,7 +20,9 @@ import cz.muni.fi.nofuzzmenu.repository.RestaurantRepository
 import kotlinx.coroutines.*
 import kotlin.coroutines.CoroutineContext
 
+
 class RestaurantListFragment : Fragment() {
+    private val TAG = this.javaClass.name
 
     // TODO: pagination https://stackoverflow.com/questions/16661662/how-to-implement-pagination-in-android-listview
     private val adapter = RestaurantsAdapter(ArrayList())
@@ -30,6 +32,8 @@ class RestaurantListFragment : Fragment() {
     private val scope = CoroutineScope(coroutineContext)
     private val repository = RestaurantRepository()
 
+    private lateinit var swipeRefreshLayout: SwipeRefreshLayout
+
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.fragment_restaurant_list, container, false)
     }
@@ -37,10 +41,15 @@ class RestaurantListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout.setOnRefreshListener {
+            loadRestaurants(view)
+        }
+        swipeRefreshLayout.setColorSchemeResources(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4)
         loadRestaurants(view)
     }
 
-    override fun onDestroy() { //todo is this right?
+    override fun onDestroy() {
         super.onDestroy()
         cancelAllRequests()
     }
@@ -84,11 +93,12 @@ class RestaurantListFragment : Fragment() {
     }
 
     private fun hideLoading() {
-        view?.findViewById<ProgressBar>(R.id.restaurants_loading)?.visibility = View.GONE
+        swipeRefreshLayout.isRefreshing = false
     }
 
     private fun showLoading() {
-        view?.findViewById<ProgressBar>(R.id.restaurants_loading)?.visibility = View.VISIBLE
+        swipeRefreshLayout.isRefreshing = true
+
     }
 
     private fun loadSavedParameters(): Map<String, String> {

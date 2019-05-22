@@ -87,13 +87,6 @@
         style="@style/Widget.MaterialComponents.CardView"
         android:layout_margin="@dimen/mtrl_card_spacing">
 
-        <ProgressBar
-            android:id="@+id/menu_loading"
-            android:translationZ="8dp"
-            android:layout_gravity="center|center"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent" />
-
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -108,21 +101,30 @@
                 android:layout_height="wrap_content"
                 android:text="@string/todays_menu" />
 
-            <TextView
-                android:id="@+id/no_data_message"
-                android:text="@string/no_data_message"
-                android:visibility="invisible"
+            <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+                android:id="@+id/swipeRefreshLayout"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
+                android:layout_height="match_parent">
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:visibility="invisible"
-                android:id="@+id/restaurant_detail_menu_items"
-                android:scrollbars="vertical"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" >
+                <TextView
+                    android:id="@+id/no_data_message"
+                    android:text="@string/no_data_message"
+                    android:visibility="invisible"
+                    android:translationZ="19dp"
+                    android:paddingHorizontal="8dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content" />
 
-            </androidx.recyclerview.widget.RecyclerView>
+                <androidx.recyclerview.widget.RecyclerView
+                    android:visibility="invisible"
+                    android:id="@+id/restaurant_detail_menu_items"
+                    android:scrollbars="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" >
+
+                </androidx.recyclerview.widget.RecyclerView>
+
+            </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
         </LinearLayout>
 
