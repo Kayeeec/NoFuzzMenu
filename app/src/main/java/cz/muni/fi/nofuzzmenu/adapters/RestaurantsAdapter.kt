@@ -11,11 +11,22 @@ import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.activity.RestaurantDetailActivity
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 
-class RestaurantsAdapter(private var restaurants: List<RestaurantInfoDto>) : RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
+
+class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>) : RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
 
     fun refresh(restaurants: List<RestaurantInfoDto>) {
-        this.restaurants = restaurants.sortedBy { it.distance }
+        this.restaurants = restaurants.sortedBy { it.distance }.toMutableList()
         notifyDataSetChanged()
+    }
+
+    fun clear() {
+        this.restaurants.clear()
+        notifyDataSetChanged()
+    }
+
+    fun addAll(restaurants: List<RestaurantInfoDto>){
+        this.restaurants.addAll(restaurants)
+        this.restaurants.sortBy { it.distance }
     }
 
     /**

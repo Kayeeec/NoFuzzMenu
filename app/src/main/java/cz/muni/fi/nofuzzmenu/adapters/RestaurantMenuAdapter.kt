@@ -1,16 +1,12 @@
 package cz.muni.fi.nofuzzmenu.adapters
 
-import android.content.Intent
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
-import cz.muni.fi.nofuzzmenu.activity.RestaurantDetailActivity
 import cz.muni.fi.nofuzzmenu.dto.view.MenuItemDto
-import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 
 class RestaurantMenuAdapter(private var menus: List<MenuItemDto>) : RecyclerView.Adapter<RestaurantMenuAdapter.ViewHolder>() {
 
