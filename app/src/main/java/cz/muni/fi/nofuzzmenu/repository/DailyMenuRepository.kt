@@ -1,5 +1,6 @@
 package cz.muni.fi.nofuzzmenu.repository
 
+import android.util.Log
 import cz.muni.fi.nofuzzmenu.dto.view.MenuItemDto
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
 import cz.muni.fi.nofuzzmenu.zomato.models.DailyMenu
@@ -11,11 +12,25 @@ import java.time.ZoneId
 import java.util.*
 
 class DailyMenuRepository() : BaseRepository() {
+    private val TAG = this::class.java.name
+
     private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1") //todo api key storage
 
     suspend fun getMenu(restaurantId: String): MutableList<MenuItemDto> {
+        val restaurantMenu = RealmUtils.getRestaurantMenu(restaurantId)
+        if (restaurantMenu.isNotEmpty()){  // todo: on errors the menu is always empty, should we call api? age?
+            Log.d(TAG, "Fetching restaurant #${restaurantId} menu from database.")
+            return restaurantMenu
+        } else {
+            val fromApi = fetchFromApi(restaurantId)
+            RealmUtils.updateRestaurant(restaurantId, fromApi)
+            return fromApi
+        }
+    }
 
-//        val call = zomatoApi.service.getMenuAsync(apiKey = zomatoApi.apiKey, restaurantId = "16506939") //working menu display
+    private suspend fun fetchFromApi(restaurantId: String): MutableList<MenuItemDto> {
+        Log.d(TAG, "Fetching restaurant #${restaurantId} menu from api.")
+        //        val call = zomatoApi.service.getMenuAsync(apiKey = zomatoApi.apiKey, restaurantId = "16506939") //working menu display
         val call = zomatoApi.service.getMenuAsync(apiKey = zomatoApi.apiKey, restaurantId = restaurantId)
 
         val response = safeApiCall(

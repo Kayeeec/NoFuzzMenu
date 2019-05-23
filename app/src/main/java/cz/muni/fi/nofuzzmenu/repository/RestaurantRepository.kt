@@ -1,10 +1,12 @@
 package cz.muni.fi.nofuzzmenu.repository
 
 import android.location.Location
+import android.util.Log
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
 
 class RestaurantRepository() : BaseRepository() {
+    private val TAG = this.javaClass.name
     private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1") //todo api key storage
     private val startLocation = Location("")
 
@@ -15,6 +17,37 @@ class RestaurantRepository() : BaseRepository() {
         count: Int = 20
     ): MutableList<RestaurantInfoDto> {
         resolveStartingLocation(parameters)
+
+        val savedRestaurants = RealmUtils.getRestaurantsForRequestFromDatabase(
+            startLocation.longitude,
+            startLocation.latitude,
+            parameters["radius"]!!.toDouble(),
+            start,
+            count
+        )
+        if (savedRestaurants.isNotEmpty()) {
+            Log.d(TAG, "Getting restaurants from database.")
+            return savedRestaurants
+        } else {
+            val fromApi = fetchFromApi(parameters, start, count)
+            RealmUtils.saveRequest(
+                startLocation.longitude,
+                startLocation.latitude,
+                parameters["radius"]!!.toDouble(),
+                start,
+                count,
+                fromApi
+            )
+            return fromApi
+        }
+    }
+
+    private suspend fun fetchFromApi(
+        parameters: Map<String, String>,
+        start: Int,
+        count: Int
+    ): MutableList<RestaurantInfoDto> {
+        Log.d(TAG, "Fetching restaurants from API.")
         val call = zomatoApi.service.getRestaurantsAsync(
             apiKey = zomatoApi.apiKey,
             query = parameters["query"],

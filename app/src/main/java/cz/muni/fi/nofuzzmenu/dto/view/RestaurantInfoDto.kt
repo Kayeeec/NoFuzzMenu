@@ -9,11 +9,11 @@ data class RestaurantInfoDto(
     var name: String, //ok
     var address: String, // ok
     val cuisines: String?,
-    val distance: Float  // distance in meters
+    val distance: Float  // distance in meters from the location used in the request, for sorting
 ): Serializable {
-    var distanceString: String = ""
+    var distanceString: String = "" // for display
      init {
-         distanceString = convertDistanceToString(distance)
+         distanceString = convertDistanceToString(distance) //so it is computed only once on creation
      }
 
     //todo what will be the maximum allowed radius?
