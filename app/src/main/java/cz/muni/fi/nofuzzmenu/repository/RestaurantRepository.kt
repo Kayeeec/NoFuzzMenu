@@ -2,12 +2,13 @@ package cz.muni.fi.nofuzzmenu.repository
 
 import android.location.Location
 import android.util.Log
+import cz.muni.fi.nofuzzmenu.BuildConfig
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
 
 class RestaurantRepository() : BaseRepository() {
     private val TAG = this.javaClass.name
-    private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1") //todo api key storage
+    private val zomatoApi = ZomatoApi(BuildConfig.ZOMATO_API_KEY) //todo api key storage
     private val startLocation = Location("")
 
     //todo default count from settings

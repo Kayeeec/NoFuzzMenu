@@ -1,6 +1,7 @@
 package cz.muni.fi.nofuzzmenu.repository
 
 import android.util.Log
+import cz.muni.fi.nofuzzmenu.BuildConfig
 import cz.muni.fi.nofuzzmenu.dto.view.MenuItemDto
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
 import cz.muni.fi.nofuzzmenu.zomato.models.DailyMenu
@@ -10,7 +11,7 @@ import java.time.format.DateTimeFormatter
 
 class DailyMenuRepository() : BaseRepository() {
     private val TAG = this::class.java.name
-    private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1") //todo api key storage
+    private val zomatoApi = ZomatoApi(BuildConfig.ZOMATO_API_KEY) //todo api key storage
     private val formats = listOf(
         DateTimeFormatter.ofPattern("yyyy-MM-dd"),
         DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),

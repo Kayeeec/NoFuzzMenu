@@ -24,6 +24,17 @@ android {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
+            buildConfigField('String' , 'ZOMATO_API_KEY', zomatoApiKey)
+            buildConfigField('String' , 'GOOGLE_MAPS_KEY', googleMapsKey)
+            resValue 'string', "ZOMATO_API_KEY", zomatoApiKey
+            resValue 'string', "GOOGLE_MAPS_KEY", googleMapsKey
+        }
+
+        debug {
+            buildConfigField('String' , 'ZOMATO_API_KEY', zomatoApiKey)
+            buildConfigField('String' , 'GOOGLE_MAPS_KEY', googleMapsKey)
+            resValue 'string', "ZOMATO_API_KEY", zomatoApiKey
+            resValue 'string', "GOOGLE_MAPS_KEY", googleMapsKey
         }
     }
 }
