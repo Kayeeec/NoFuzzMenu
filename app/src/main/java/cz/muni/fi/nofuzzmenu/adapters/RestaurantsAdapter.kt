@@ -17,7 +17,7 @@ import cz.muni.fi.nofuzzmenu.utils.RestaurantThumbnails
 class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>) : RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
 
     fun refresh(restaurants: List<RestaurantInfoDto>) {
-        this.restaurants = restaurants.sortedBy { it.distance }.toMutableList()
+        this.restaurants = restaurants.toMutableList()
         RestaurantThumbnails.resetCounter()
         notifyDataSetChanged()
     }
@@ -30,7 +30,7 @@ class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>
 
     fun addAll(restaurants: List<RestaurantInfoDto>){
         this.restaurants.addAll(restaurants)
-        this.restaurants.sortBy { it.distance }
+        this.restaurants
     }
 
     /**
@@ -66,22 +66,20 @@ class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>
 
     /**
      * Reusable ViewHolder objects.
-     * TODO: put necessary data here, according to mockups
      */
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         var thumbnail = itemView.findViewById<ImageView>(R.id.thumbnail)
         var name: TextView = itemView.findViewById(R.id.name)
+        var rating: TextView = itemView.findViewById(R.id.rating)
+        var priceRange: TextView = itemView.findViewById(R.id.price_range)
         var distance: TextView = itemView.findViewById(R.id.distance)
         var cuisines = itemView.findViewById<TextView>(R.id.cuisine)
 
         fun bind(restaurant: RestaurantInfoDto) {
-            //val context = avatar.context
-            // TODO: use Glide to load restaurant thumbnails
-            //Glide.with(context)
-            //    .load(user.avatarUrl)
-            //    .into(avatar)
             thumbnail.setImageResource(RestaurantThumbnails.getThumbnailDrawableAndIncrement())
             name.text = restaurant.name
+            rating.text = restaurant.rating()
+            priceRange.text = restaurant.priceRange()
             distance.text = restaurant.distanceString
             cuisines.text = restaurant.cuisines
         }

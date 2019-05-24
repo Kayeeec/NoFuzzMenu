@@ -7,7 +7,9 @@ data class ZomatoRestaurant(val id: String,
                             val url: String,
                             val location: ZomatoLocation,
                             val cuisines: String,
-                            val menu_url: String): Serializable
+                            val menu_url: String,
+                            val price_range: Float,
+                            val user_rating: ZomatoUserRating): Serializable
 
 /*
 {

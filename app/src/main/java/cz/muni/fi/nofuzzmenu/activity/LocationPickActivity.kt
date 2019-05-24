@@ -3,15 +3,19 @@ package cz.muni.fi.nofuzzmenu.activity
 import android.Manifest
 import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.location.Location
 import android.location.LocationManager
 import android.net.Uri
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.provider.Settings
 import android.util.Log
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
+import android.view.View
+import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
@@ -20,6 +24,8 @@ import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import cz.muni.fi.nofuzzmenu.R
+import com.google.android.gms.maps.model.MarkerOptions
+import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
 
@@ -32,6 +38,7 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
     private lateinit var mLocationRequest: LocationRequest
     private lateinit var locationCallback: LocationCallback
     private lateinit var fusedLocationClient: FusedLocationProviderClient
+    private lateinit var prefs: SharedPreferences
 
     var currentLocation: Location = Location(LocationManager.GPS_PROVIDER)
     var defaultLocation: Location = Location(LocationManager.GPS_PROVIDER)
@@ -40,13 +47,20 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_location_pick)
         setDefaultLocation()
+        setUpCenterButton()
+        //val prefs = context?.getSharedPreferences(preferencesName, Context.MODE_PRIVATE) ?: return HashMap()
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
         mLocationRequest = LocationRequest.create()
             .setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY)
             .setInterval(60 * 1000)
             .setFastestInterval(30 * 1000)
 
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
+
         // from: https://developer.android.com/training/location/receive-location-updates.html
+        // set up location tracking callback
         locationCallback = object : LocationCallback() {
             override fun onLocationResult(locationResult: LocationResult?) {
                 locationResult ?: return
@@ -54,33 +68,41 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
                     Log.d(TAG, "Handling location update callback: setting location to $location")
                     currentLocation = location
                     val startingLocation = LatLng(currentLocation.latitude, currentLocation.longitude)
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startingLocation, 5f))
-                    // TODO: after first receive, unsubscribe, subscribe in onResume
-                    // TODO: add recenter button
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(startingLocation, 17f))
+                    fusedLocationClient.removeLocationUpdates(this)
+                    Log.d(TAG, "Unsubscribed from location updates (callback)")
                 }
             }
         }
-
-        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-
-        // TODO (priority): save lat, lon to shared Prefs ... when?
     }
 
     override fun onStart() {
         super.onStart()
-        setStartingLocation()
-        Log.d(TAG, "OnStart currentLocation: $currentLocation")
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         val mapFragment = supportFragmentManager
             .findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
 
+    override fun onResume() {
+        super.onResume()
+
+        // subscribe to location updates
+        setStartingLocation()
+        Log.d(TAG, "onResume currentLocation: $currentLocation")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        // unsubscribe from location updates
+        fusedLocationClient.removeLocationUpdates(locationCallback)
+        Log.d(TAG, "Unsubscribed from location updates (onPause)")
+    }
+
     /**
      * Manipulates the map once available.
      * This callback is triggered when the map is ready to be used.
-     * This is where we can add markers or lines, add listeners or move the camera. In this case,
-     * we just add a marker near Sydney, Australia.
+     * This is where we can add markers or lines, add listeners or move the camera.
      * If Google Play services is not installed on the device, the user will be prompted to install
      * it inside the SupportMapFragment. This method will only be triggered once the user has
      * installed Google Play services and returned to the app.
@@ -90,6 +112,37 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
         // clear markers
         mMap.clear()
         // Don't set any camera view here, as this method is called very early
+
+        // register an click listener to save location to shared preferences
+        mMap.setOnMapClickListener { position : LatLng ->
+            prefs.edit()
+                .putString("latitude", position.latitude.toString())
+                .putString("longitude", position.longitude.toString())
+                .apply()
+            Log.d(TAG, "Set location from marker to ${position.latitude}, ${position.longitude}")
+            // set marker on the map
+            // Creating a marker
+            val markerOptions = MarkerOptions()
+
+            // Setting the position for the marker
+            markerOptions.position(position)
+
+            // Setting the title for the marker.
+            // This will be displayed on taping the marker
+            markerOptions.title("${position.latitude}, ${position.longitude}")
+
+            // Clears the previously touched position
+            googleMap.clear()
+
+            // Animating to the touched position
+            googleMap.animateCamera(CameraUpdateFactory.newLatLng(position))
+
+            // Placing a marker on the touched position
+            googleMap.addMarker(markerOptions)
+        }
+
+        val activityView = findViewById<CoordinatorLayout>(R.id.location_activity)
+        activityView.visibility = View.VISIBLE
     }
 
     private fun requestLocationPermission() {
@@ -166,6 +219,11 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
                     Log.d(TAG, "Set current location to $currentLocation (location was $location)")
                 }
         }
+    }
+
+    private fun setUpCenterButton() {
+        val fab = findViewById<FloatingActionButton>(R.id.button_center)
+        fab.setOnClickListener { setStartingLocation() }
     }
 
 }

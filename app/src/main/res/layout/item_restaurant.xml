@@ -16,7 +16,7 @@
         android:layout_height="50dp"
         android:layout_marginHorizontal="8dp"
         tools:src="@mipmap/ic_launcher"
-        android:contentDescription="@string/restaurant_icon" /> <!--TODO: use thumbnail per restaurant-->
+        android:contentDescription="@string/restaurant_icon" />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -49,16 +49,45 @@
                 android:gravity="center|end"
                 android:textStyle="bold"
                 android:typeface="monospace"
-                tools:text="1000000000m" /> <!--TODO: style as bigger text, but faded-->
+                tools:text="1000000000m" />
 
         </LinearLayout>
 
-        <TextView
-            android:id="@+id/cuisine"
+        <LinearLayout
             android:layout_width="match_parent"
+            android:orientation="horizontal"
             android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            tools:text="Czech, Slovak, Steak"/>
+            tools:weightSum="6">
+            <TextView
+                android:id="@+id/cuisine"
+                android:layout_weight="4"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                tools:text="Czech, Slovak, Steak"/>
+
+            <TextView
+                android:id="@+id/rating"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical|start"
+                android:layout_marginStart="8dp"
+                android:layout_marginEnd="4dp"
+                android:layout_weight="1"
+                android:scrollHorizontally="true"
+                android:maxLines="1"
+                tools:text="3/5"/>
+
+            <TextView
+                android:id="@+id/price_range"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:gravity="center|end"
+                android:textStyle="bold"
+                android:typeface="monospace"
+                android:layout_weight="1"
+                tools:text="200-400 Czk" />
+        </LinearLayout>
     </LinearLayout>
 
 </LinearLayout>

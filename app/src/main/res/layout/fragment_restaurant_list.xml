@@ -6,7 +6,7 @@
 
         <TextView
             android:id="@+id/no_data_message"
-            android:text="@string/no_data_message"
+            android:text="@string/no_data_message_list"
             android:visibility="invisible"
             android:padding="8dp"
             android:layout_width="match_parent"

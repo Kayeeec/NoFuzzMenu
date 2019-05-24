@@ -33,7 +33,7 @@
         <activity
             android:name=".activity.LocationPickActivity"
             android:parentActivityName=".activity.SearchSettingsActivity"
-            android:label="@string/title_activity_location_pick" />
+            android:label="@string/set_starting_location" />
 
         <activity
             android:name=".activity.MainActivity"

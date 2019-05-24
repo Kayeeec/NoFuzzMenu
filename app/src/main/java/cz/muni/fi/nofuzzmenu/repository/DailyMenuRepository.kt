@@ -48,7 +48,7 @@ class DailyMenuRepository() : BaseRepository() {
                 dailyMenu.dishes?.forEach {
                     val dish = it.dish
                     if (dish.name.isNotEmpty()){
-                        result.add(MenuItemDto(name = dish.name, cost = dish.price))
+                        result.add(MenuItemDto(id= dish.dish_id, name = dish.name, cost = dish.price))
                     }
                 }
             }

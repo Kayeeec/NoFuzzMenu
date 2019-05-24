@@ -4,15 +4,33 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <SeekBarPreference
-            app:key="radius"
-            app:title="@string/radius"
-            app:summary="@string/radius_summary"
-            android:min="200"
-            android:max="2000" />
+        app:key="radius"
+        app:title="@string/radius"
+        app:summary="Specify restaurant search radius"
+        android:min="200"
+        android:max="3000"
+        app:iconSpaceReserved="false"/>
     <!--TODO: style the seek bar so that higher numbers show full, and possibly make larger steps (50 meters?) -->
+    <ListPreference
+        app:key="sortBy"
+        app:title="Sort results by"
+        android:defaultValue="real_distance"
+        android:entries="@array/search_sort_options_text"
+        android:entryValues="@array/search_sort_options"
+        app:iconSpaceReserved="false"/>
+
+    <ListPreference
+        app:key="order"
+        app:title="Sort order"
+        android:defaultValue="asc"
+        android:entryValues="@array/search_order_options"
+        android:entries="@array/search_order_options_text"
+        app:iconSpaceReserved="false"/>
+
     <Preference
         app:key="location"
-        app:title="@string/set_starting_location">
+        app:title="@string/title_activity_location_pick"
+        app:iconSpaceReserved="false">
         <intent
             android:action="android.intent.action.VIEW"
             android:targetPackage="cz.muni.fi.nofuzzmenu"

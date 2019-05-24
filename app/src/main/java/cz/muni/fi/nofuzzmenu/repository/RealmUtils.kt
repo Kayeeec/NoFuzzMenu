@@ -14,9 +14,9 @@ object RealmUtils{
     private val TAG = this.javaClass.name
 
     fun saveRequest(
-        longitude: Double,
-        latitude: Double,
-        radius: Double,
+        longitude: Double?,
+        latitude: Double?,
+        radius: Double?,
         start: Int,
         count: Int,
         restaurants: MutableList<RestaurantInfoDto>
@@ -32,7 +32,7 @@ object RealmUtils{
                 .equalTo("latitude", latitude)
                 .equalTo("longitude", longitude)
                 .equalTo("date", today)
-                .lessThanOrEqualTo("radius", radius)
+                .lessThanOrEqualTo("radius", radius ?: 0.0)
                 .lessThanOrEqualTo("lastStart", start)
                 .lessThanOrEqualTo("lastCount", count).findFirst()
 
@@ -122,8 +122,11 @@ object RealmUtils{
         }
     }
 
-    fun getRestaurantsForRequestFromDatabase(longitude: Double, latitude: Double, radius: Double, start: Int, count: Int): MutableList<RestaurantInfoDto> {
+    fun getRestaurantsForRequestFromDatabase(longitude: Double?, latitude: Double?, radius: Double?, start: Int, count: Int): MutableList<RestaurantInfoDto> {
         Log.d(TAG, "getRequestFromDatabase with params - longitude: $longitude, latitude: $latitude, radius: $radius, start: $start, count: $count")
+        if (radius == null || longitude == null || latitude == null) {
+            return mutableListOf()
+        }
         val realm = Realm.getDefaultInstance()
         val today = LocalDate.now().toString()
         realm.use {

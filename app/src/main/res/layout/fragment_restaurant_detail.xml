@@ -36,15 +36,43 @@
                     android:layout_height="wrap_content"
                     android:text="Restaurant Name" />
 
-                <TextView
-                    android:id="@+id/detail_cuisines"
-                    style="@style/TextAppearance.MaterialComponents.Caption"
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingBottom="8dp"
-                    android:text="@string/label_cuisines"
-                    android:textColor="@color/common_google_signin_btn_text_light_default" />
+                    android:orientation="horizontal"
+                    tools:weightSum="3">
+                    <TextView
+                        android:id="@+id/detail_cuisines"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:layout_gravity="center"
+                        android:text="@string/label_cuisines"
+                        android:layout_weight="1"
+                        android:textColor="@color/common_google_signin_btn_text_light_default"/>
+                    <TextView
+                        android:id="@+id/detail_rating"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:paddingBottom="8dp"
+                        android:layout_gravity="center"
+                        android:text="@string/label_rating"
+                        android:layout_weight="1"
+                        android:textColor="@color/common_google_signin_btn_text_light_default"/>
 
+                    <TextView
+                        android:id="@+id/detail_price_range"
+                        style="@style/TextAppearance.MaterialComponents.Caption"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:paddingBottom="8dp"
+                        android:text="@string/label_price_range"
+                        android:layout_weight="1"
+                        android:textColor="@color/common_google_signin_btn_text_light_default" />
+                </LinearLayout>
                 <TextView
                     android:id="@+id/detail_distance"
                     android:layout_width="match_parent"
@@ -53,7 +81,7 @@
                     android:drawablePadding="8dp"
                     android:paddingStart="2dp"
                     android:paddingEnd="2dp"
-                    android:text="800 m"
+                    android:text="800m"
                     android:textStyle="bold" />
 
                 <TextView
@@ -111,7 +139,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="8dp"
-                    android:text="@string/no_data_message"
+                    android:text="@string/no_data_message_menus"
                     android:translationZ="19dp"
                     android:visibility="invisible" />
 
