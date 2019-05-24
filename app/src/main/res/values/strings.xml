@@ -24,4 +24,5 @@
     <string name="location_perm_request_message">The app automatically searches for restaurants around you. Without your location we can not suggest relevant restaurants.</string>
     <string name="no_data_message_list">Sorry. No data available - try changing the search parameters</string>
     <string name="no_data_message_menus">Sorry. No data available.</string>
+    <string name="rating">%1$s / %2$s</string>
 </resources>
