@@ -50,6 +50,11 @@ class RestaurantDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG,  "onViewCreated(...)")
+        swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout?.setOnRefreshListener {
+            loadMenu(restaurant)
+        }
+        swipeRefreshLayout?.setColorSchemeResources(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4)
 
     }
 
@@ -57,13 +62,6 @@ class RestaurantDetailFragment : Fragment() {
         super.onActivityCreated(savedInstanceState)
         getRestaurantFromActivity()
         populateDetails()
-
-        swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
-        swipeRefreshLayout?.setOnRefreshListener {
-            loadMenu(restaurant)
-        }
-        swipeRefreshLayout?.setColorSchemeResources(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4)
-        loadMenu(restaurant)
 
         loadMenu(restaurant)
     }

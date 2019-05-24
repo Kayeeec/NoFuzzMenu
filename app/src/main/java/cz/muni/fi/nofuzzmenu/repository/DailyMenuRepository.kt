@@ -5,16 +5,19 @@ import cz.muni.fi.nofuzzmenu.dto.view.MenuItemDto
 import cz.muni.fi.nofuzzmenu.zomato.ZomatoApi
 import cz.muni.fi.nofuzzmenu.zomato.models.DailyMenu
 import cz.muni.fi.nofuzzmenu.zomato.models.ZomatoMenu
-import java.text.ParseException
-import java.text.SimpleDateFormat
 import java.time.LocalDate
-import java.time.ZoneId
-import java.util.*
+import java.time.format.DateTimeFormatter
 
 class DailyMenuRepository() : BaseRepository() {
     private val TAG = this::class.java.name
-
     private val zomatoApi = ZomatoApi("fba201f738abbed300423c42a0e7aea1") //todo api key storage
+    private val formats = listOf(
+        DateTimeFormatter.ofPattern("yyyy-MM-dd"),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm"),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSZ"),
+        DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSSXXX")
+    )
 
     suspend fun getMenu(restaurantId: String): MutableList<MenuItemDto> {
         val restaurantMenu = RealmUtils.getRestaurantMenu(restaurantId)
@@ -67,13 +70,16 @@ class DailyMenuRepository() : BaseRepository() {
         return today.isEqual(endDate)
     }
 
-    private fun dateFromString(string: String): LocalDate? {
-        val fmtLocale = Locale.getDefault(Locale.Category.FORMAT)
-        val dateFormat = SimpleDateFormat("yyyy-MM-dd HH:mm", fmtLocale)
-        try {
-            return dateFormat.parse(string).toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
-        } catch (e: ParseException) {
-            e.printStackTrace()
+    //assume api fetches local date (in zone of the user)
+    private fun dateFromString(string: String?): LocalDate?{
+        if (string.isNullOrBlank()) return null
+        for (format in formats){
+            try {
+                val date = LocalDate.parse(string, format)
+                if (date != null ) return date
+            } catch (e: Exception){
+                // do nothing
+            }
         }
         return null
     }
