@@ -82,7 +82,6 @@ class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>
             //    .into(avatar)
             thumbnail.setImageResource(RestaurantThumbnails.getThumbnailDrawableAndIncrement())
             name.text = restaurant.name
-            Log.d("rest list adapter", distance.toString())
             distance.text = restaurant.distanceString
             cuisines.text = restaurant.cuisines
         }

@@ -2,25 +2,24 @@ package cz.muni.fi.nofuzzmenu.activity
 
 import android.Manifest
 import android.content.Context
-import androidx.appcompat.app.AppCompatActivity
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.location.LocationManager
+import android.net.Uri
 import android.os.Bundle
-
+import android.provider.Settings
+import android.util.Log
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.OnMapReadyCallback
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.gms.maps.model.LatLng
 import cz.muni.fi.nofuzzmenu.R
-import android.location.LocationManager
-import android.content.Intent
-import android.content.pm.PackageManager
-import android.location.Location
-import androidx.appcompat.app.AlertDialog
-import android.net.Uri
-import android.provider.Settings
-import android.util.Log
-import androidx.core.app.ActivityCompat
-import com.google.android.gms.location.*
 
 class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
 
@@ -141,9 +140,8 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
     private fun showLocationPermissionRationale(context: Context) {
         val alertBuilder = AlertDialog.Builder(context)
         alertBuilder.setCancelable(true)
-        alertBuilder.setTitle("Location permission request")
-        alertBuilder.setMessage("The app automatically searches for restaurants around you. Without your location" +
-                "we can not suggest relevant restaurants.")
+        alertBuilder.setTitle(getString(R.string.location_perm_request_title))
+        alertBuilder.setMessage(getString(R.string.location_perm_request_message))
         alertBuilder.setPositiveButton(android.R.string.ok) { dialog, which ->
             // go to settings page to set the permission
             val intent = Intent(

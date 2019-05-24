@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">No Fuzz Menu</string>
+    <string name="action_search_settings">Nastavení vyhledávání</string>
+    <string name="action_settings">Nastavení</string>
+    <string name="label_address">Adresa</string>
+    <string name="label_cuisines">Kuchyně</string>
+    <string name="menu_loading_message">Stahuji dnešní menu…</string>
+    <string name="menu_web">Web menu</string>
+    <string name="navigate">Navigovat</string>
+    <string name="no_data_message">Pardon, údaje nejsou k dispozici.</string>
+    <string name="radius">Rádius</string>
+    <string name="radius_summary">Nastaví vyhledávání restaurací do dané vzdálenosti (v metrech).</string>
+    <string name="restaurant_icon">Ikona restaurace.</string>
+    <string name="restaurant_info_header">Restaurace:</string>
+    <string name="restaurant_menu_header">Denní menu</string>
+    <string name="todays_menu">Dnešní menu</string>
+    <string name="search">Vyhledat na Google</string>
+    <string name="set_starting_location">Nastavit počáteční pozici</string>
+    <string name="title_activity_location_pick">Vybrat pozici</string>
+    <string name="title_general_settings">Nastavení</string>
+    <string name="title_quick_settings">Rychlé nastavení</string>
+    <string name="title_restaurant_detail">Restaurace</string>
+    <string name="web">Web</string>
+    <string name="location_perm_request_message">Aplikace automaticky hledá restaurace v okolí. Bez znalosti Vaší pozice Vám nemůžeme poskytnot relevantní restaurace.</string>
+    <string name="location_perm_request_title">Povolit získávání polohy</string>
+</resources>

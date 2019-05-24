@@ -5,9 +5,8 @@
     <string name="title_quick_settings">Quick settings</string>
     <string name="title_general_settings">Settings</string>
     <string name="title_restaurant_detail">Restaurant</string>
-    <string name="title_activity_restaurant_detail2">RestaurantDetail2</string>
     <string name="title_activity_location_pick">Choose location</string>
-    <string name="label_cuisines">Quisines</string>
+    <string name="label_cuisines">Cuisines</string>
     <string name="label_address">Address</string>
     <string name="restaurant_info_header">Restaurant: </string>
     <string name="navigate">Navigate</string>
@@ -16,6 +15,12 @@
     <string name="restaurant_menu_header">Menu</string>
     <string name="todays_menu">Today\'s Menu</string>
     <string name="search">Search on Google</string>
-    <string name="menu_loading_message">Fetching today\'s menu...</string>
+    <string name="menu_loading_message">Fetching today\'s menu…</string>
     <string name="no_data_message">Sorry. No data available.</string>
+    <string name="restaurant_icon">Restaurant icon</string>
+    <string name="radius">Radius</string>
+    <string name="radius_summary">Specify restaurant search radius (in meters).</string>
+    <string name="set_starting_location">Set starting location</string>
+    <string name="location_perm_request_title">Location permission request</string>
+    <string name="location_perm_request_message">The app automatically searches for restaurants around you. Without your location we can not suggest relevant restaurants.</string>
 </resources>

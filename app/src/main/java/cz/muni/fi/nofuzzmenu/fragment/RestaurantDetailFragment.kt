@@ -50,7 +50,7 @@ class RestaurantDetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         Log.d(TAG,  "onViewCreated(...)")
-        swipeRefreshLayout = view?.findViewById(R.id.swipeRefreshLayout)
+        swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout?.setOnRefreshListener {
             loadMenu(restaurant)
         }
@@ -177,35 +177,6 @@ class RestaurantDetailFragment : Fragment() {
         }
 
     }
-
-    //todo delete on done
-    private val mockMenu = listOf(
-        MenuItemDto(name="Guláš segedýnský", cost = "90.50 Kč"),
-        MenuItemDto(name="Rajská se sekanou", cost = "80 Kč"),
-        MenuItemDto(name="Ravioli", cost = "150 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar longass name that should probably brake and make everything weird lorem ipsum sit amet dolor color sum nomer uno dos tres quatro sinco sicno seis you are pretty fly", cost = "10005 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč"),
-        MenuItemDto(name="Salát Caesar", cost = "15 Kč")
-    )
 
 
 }

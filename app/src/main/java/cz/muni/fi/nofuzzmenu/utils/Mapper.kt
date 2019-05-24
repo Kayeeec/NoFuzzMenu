@@ -3,7 +3,6 @@ package cz.muni.fi.nofuzzmenu.utils
 import cz.muni.fi.nofuzzmenu.dto.view.MenuItemDto
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 import cz.muni.fi.nofuzzmenu.models.MenuItem
-import cz.muni.fi.nofuzzmenu.models.Request
 import cz.muni.fi.nofuzzmenu.models.Restaurant
 import io.realm.RealmList
 
@@ -37,14 +36,6 @@ object Mapper {
         r.restaurantId = dto.id
         r.name = dto.name
         return r
-    }
-
-    fun requestToDtoList(request: Request): MutableList<RestaurantInfoDto> {
-        val result = mutableListOf<RestaurantInfoDto>()
-        for (r in request.restaurants){
-            result.add(restaurantToDto(r))
-        }
-        return result
     }
 
     fun menusToDtos(menu: RealmList<MenuItem>): MutableList<MenuItemDto> {

@@ -60,7 +60,7 @@ class RestaurantMenuAdapter(private var menus: List<MenuItemDto>) : RecyclerView
         private fun formatItemNumber(adapterPosition: Int): String {
             val index = adapterPosition + 1
             if (index in 0..9) return " ${index}." //adds space before single digit line numbers
-            return "${index}."
+            return "$index."
         }
     }
 }

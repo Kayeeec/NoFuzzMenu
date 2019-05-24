@@ -38,7 +38,7 @@ class DailyMenuRepository() : BaseRepository() {
 
         val response = safeApiCall(
             call = { call.await() },
-            errorMessage = "Error fetching restaurant's daily menu from zomato."
+            errorMessage = "Error fetching restaurant's daily menu from zomato." //todo proper exceptions
         )
         val result = mutableListOf<MenuItemDto>()
         response?.daily_menus?.forEach { zomatoMenu: ZomatoMenu ->

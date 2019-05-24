@@ -62,7 +62,7 @@ class RestaurantRepository() : BaseRepository() {
         )
         val zomatoResponse = safeApiCall(
             call = { call.await() },
-            errorMessage = "Error fetching restaurants from zomato."
+            errorMessage = "Error fetching restaurants from zomato." // todo proper exception
         )
 
         val zomatoRestaurants = mutableListOf<RestaurantInfoDto>()
