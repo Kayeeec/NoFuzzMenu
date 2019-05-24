@@ -32,17 +32,21 @@
 
         <activity
             android:name=".activity.LocationPickActivity"
+            android:parentActivityName=".activity.SearchSettingsActivity"
             android:label="@string/title_activity_location_pick" />
+
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/app_name"
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".activity.SearchSettingsActivity"
             android:label="@string/title_quick_settings"
@@ -52,6 +56,7 @@
             android:name=".activity.RestaurantDetailActivity"
             android:label="@string/title_restaurant_detail"
             android:parentActivityName=".activity.MainActivity" />
+
     </application>
 
 </manifest>
