@@ -111,7 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:paddingHorizontal="8dp"
-                    android:text="@string/no_data_message"
+                    android:text="@string/no_data_message_menus"
                     android:translationZ="19dp"
                     android:visibility="invisible" />
 

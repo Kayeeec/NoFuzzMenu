@@ -29,7 +29,7 @@
 
     <Preference
         app:key="location"
-        app:title="@string/set_starting_location">
+        app:title="@string/title_activity_location_pick"
         app:iconSpaceReserved="false">
         <intent
             android:action="android.intent.action.VIEW"
