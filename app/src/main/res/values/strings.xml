@@ -7,6 +7,8 @@
     <string name="title_restaurant_detail">Restaurant</string>
     <string name="title_activity_location_pick">Choose starting location</string>
     <string name="label_cuisines">Cuisines</string>
+    <string name="label_rating">Rating</string>
+    <string name="label_price_range">Price range</string>
     <string name="label_address">Address</string>
     <string name="restaurant_info_header">Restaurant: </string>
     <string name="navigate">Navigate</string>

@@ -78,6 +78,12 @@ class RestaurantDetailFragment : Fragment() {
         val cuisines = view?.findViewById<TextView>(R.id.detail_cuisines)
         cuisines?.text = restaurant.cuisines
 
+        val rating = view?.findViewById<TextView>(R.id.detail_rating)
+        rating?.text = restaurant.rating()
+
+        val priceRange = view?.findViewById<TextView>(R.id.detail_price_range)
+        priceRange?.text = restaurant.priceRange()
+
         val address = view?.findViewById<TextView>(R.id.detail_address)
         address?.text = restaurant.address
 
