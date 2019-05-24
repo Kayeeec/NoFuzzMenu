@@ -8,11 +8,12 @@ import io.realm.RealmList
 
 object Mapper {
     fun menuItemToDto(menuItem: MenuItem): MenuItemDto {
-        return MenuItemDto(menuItem.name!!, menuItem.cost ?: "")
+        return MenuItemDto(menuItem.menuId!!, menuItem.name!!, menuItem.cost ?: "")
     }
 
     fun dtoToMenuItem(dto: MenuItemDto): MenuItem {
         val menuItem = MenuItem()
+        menuItem.menuId = dto.id
         menuItem.name = dto.name
         menuItem.cost = dto.cost
         return menuItem
