@@ -141,13 +141,6 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
             googleMap.addMarker(markerOptions)
         }
 
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
-            mMap.isMyLocationEnabled = true
-            mMap.uiSettings.isMyLocationButtonEnabled = true
-        } else {
-            requestLocationPermission()
-        }
-
         val activityView = findViewById<CoordinatorLayout>(R.id.location_activity)
         activityView.visibility = View.VISIBLE
     }
