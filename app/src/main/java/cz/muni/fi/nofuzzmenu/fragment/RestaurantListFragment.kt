@@ -1,6 +1,5 @@
 package cz.muni.fi.nofuzzmenu.fragment
 
-import android.content.Context
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.util.Log
@@ -50,7 +49,13 @@ class RestaurantListFragment : Fragment() {
         swipeRefreshLayout.setColorSchemeResources(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4)
         loadRestaurants(view)
     }
-
+/*
+    override fun onPause() {
+        super.onPause()
+        val list = view.findViewById<RecyclerView>(android.R.id.list)
+        list.adapter.clear
+    }
+*/
     override fun onDestroy() {
         super.onDestroy()
         cancelAllRequests()
@@ -64,12 +69,10 @@ class RestaurantListFragment : Fragment() {
         list.visibility = View.GONE
         list.layoutManager = LinearLayoutManager(context)
         list.adapter = adapter
-        list.setHasFixedSize(true)
         list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
 
         val searchParameters = loadSavedParameters()
         Log.d(TAG, "Loaded search parameters: $searchParameters")
-        // TODO?: overwrite restaurants on start location change
 
         scope.launch {
             val restaurants = repository.getRestaurants(searchParameters)

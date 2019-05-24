@@ -11,5 +11,7 @@ open class Restaurant: RealmObject() {
     var address: String? = null
     var cuisines: String? = null
     var distance: Float? = null
+    var priceRange: Float? = null
+    var rating: Float? = null
     var menu: RealmList<MenuItem> = RealmList()
 }

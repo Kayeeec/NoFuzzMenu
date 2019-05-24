@@ -24,7 +24,9 @@ object Mapper {
             name = restaurant.name!!,
             address = restaurant.address!!,
             cuisines = restaurant.cuisines!!,
-            distance = restaurant.distance!!
+            distance = restaurant.distance!!,
+            price_range = restaurant.priceRange!!,
+            rating = restaurant.rating!!
         )
     }
 
@@ -35,6 +37,8 @@ object Mapper {
         r.cuisines = dto.cuisines
         r.restaurantId = dto.id
         r.name = dto.name
+        r.priceRange = dto.price_range
+        r.rating = dto.rating
         return r
     }
 

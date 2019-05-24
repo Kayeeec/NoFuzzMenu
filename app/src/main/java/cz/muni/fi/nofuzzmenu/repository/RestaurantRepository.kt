@@ -28,7 +28,8 @@ class RestaurantRepository : BaseRepository() {
         )
         if (savedRestaurants.isNotEmpty()) {
             Log.d(TAG, "Getting restaurants from database.")
-            return savedRestaurants
+            // filter and order
+            return sortAndFilterRestaurants(parameters, savedRestaurants)
         } else {
             val fromApi = fetchFromApi(parameters, start, count)
             RealmUtils.saveRequest(
@@ -72,14 +73,10 @@ class RestaurantRepository : BaseRepository() {
             val endLocation = getLocation(r.location.latitude, r.location.longitude)
             val distance = startLocation.distanceTo(endLocation)
             // filtering has to be done manually, Zomato search does not filter
-            val radius = parameters["radius"]?.toDouble()
-            if (radius == null){
-                zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance, r.price_range, r.user_rating.aggregate_rating))
-            } else if (distance < radius) {
-                zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance, r.price_range, r.user_rating.aggregate_rating))
-            }
+            zomatoRestaurants.add(RestaurantInfoDto(r.id, r.name, r.location.address, r.cuisines, distance, r.price_range, r.user_rating.aggregate_rating))
+
         }
-        return sortRestaurants(parameters, zomatoRestaurants)
+        return sortAndFilterRestaurants(parameters, zomatoRestaurants)
     }
 
     private fun resolveStartingLocation(parameters: Map<String, String>) {
@@ -102,26 +99,37 @@ class RestaurantRepository : BaseRepository() {
         return location
     }
 
-    private fun sortRestaurants(parameters: Map<String, String>, restaurants: MutableList<RestaurantInfoDto>): MutableList<RestaurantInfoDto> {
-        val sortOrder = parameters["order"] ?: "asc"
-        val sortCriteria = parameters["sortBy"] ?: "real_distance"
-        val output = ArrayList(restaurants)
-        if (sortOrder == "asc") {
-            Log.d(TAG, "Sorting asc")
-            output.sortBy(sortFunctions.getValue(sortCriteria))
-        } else {
-            Log.d(TAG, "Sorting desc")
-            output.sortByDescending(sortFunctions.getValue(sortCriteria))
+    private fun sortAndFilterRestaurants(parameters: Map<String, String>, restaurants: MutableList<RestaurantInfoDto>): MutableList<RestaurantInfoDto> {
+        val radius = parameters["radius"]?.toDouble()
+        val output = mutableListOf<RestaurantInfoDto>()
+
+        if (radius != null) {
+            restaurants.forEach { r ->
+                if (r.distance < radius) {
+                    output.add(r)
+                }
+            }
         }
 
-        return output
-    }
+        val sortOrder = parameters["order"] ?: "asc"
+        val sortCriteria = parameters["sortBy"] ?: "real_distance"
+        if (sortOrder == "asc") {
+            Log.d(TAG, "Sorting asc")
+            when (sortCriteria){
+                "real_distance" -> output.sortBy { it.distance }
+                "cost" -> output.sortBy { it.price_range }
+                "rating" -> output.sortBy { it.rating }
+            }
+        } else {
+            Log.d(TAG, "Sorting desc")
+            when (sortCriteria){
+                "real_distance" -> output.sortByDescending { it.distance }
+                "cost" -> output.sortByDescending { it.price_range }
+                "rating" -> output.sortByDescending { it.rating }
+            }
+        }
 
-    companion object {
-        val sortFunctions = mapOf(
-            Pair("real_distance", {r:RestaurantInfoDto -> r.distance}),
-            Pair("cost", {r:RestaurantInfoDto -> r.price_range}),
-            Pair("rating", {r:RestaurantInfoDto -> r.rating})
-        )
+        Log.d(TAG, "Sorted output: ${output.forEach {println(it)}}")
+        return output
     }
 }
