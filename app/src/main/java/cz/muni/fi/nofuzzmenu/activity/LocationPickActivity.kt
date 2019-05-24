@@ -141,10 +141,9 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
             googleMap.addMarker(markerOptions)
         }
 
-        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+        if (checkSelfPermission(android.Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
             mMap.isMyLocationEnabled = true
             mMap.uiSettings.isMyLocationButtonEnabled = true
-
         } else {
             requestLocationPermission()
         }

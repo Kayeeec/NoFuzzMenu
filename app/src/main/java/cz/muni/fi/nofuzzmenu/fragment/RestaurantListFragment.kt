@@ -49,13 +49,7 @@ class RestaurantListFragment : Fragment() {
         swipeRefreshLayout.setColorSchemeResources(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4)
         loadRestaurants(view)
     }
-/*
-    override fun onPause() {
-        super.onPause()
-        val list = view.findViewById<RecyclerView>(android.R.id.list)
-        list.adapter.clear
-    }
-*/
+
     override fun onDestroy() {
         super.onDestroy()
         cancelAllRequests()

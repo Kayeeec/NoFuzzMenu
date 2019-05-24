@@ -18,11 +18,14 @@ class RestaurantRepository : BaseRepository() {
         count: Int = 20
     ): MutableList<RestaurantInfoDto> {
         resolveStartingLocation(parameters)
+        if (startLocation.latitude == Double.NaN || startLocation.longitude == Double.NaN) {
+            return mutableListOf()
+        }
 
         val savedRestaurants = RealmUtils.getRestaurantsForRequestFromDatabase(
             startLocation.longitude,
             startLocation.latitude,
-            parameters["radius"]!!.toDouble(),
+            parameters["radius"]?.toDouble(),
             start,
             count
         )
@@ -35,7 +38,7 @@ class RestaurantRepository : BaseRepository() {
             RealmUtils.saveRequest(
                 startLocation.longitude,
                 startLocation.latitude,
-                parameters["radius"]!!.toDouble(),
+                parameters["radius"]?.toDouble(),
                 start,
                 count,
                 fromApi
@@ -80,12 +83,8 @@ class RestaurantRepository : BaseRepository() {
     }
 
     private fun resolveStartingLocation(parameters: Map<String, String>) {
-        parameters["latitude"]?.toDoubleOrNull()?.let {
-            startLocation.latitude = it
-        }
-        parameters["longitude"]?.toDoubleOrNull()?.let {
-            startLocation.longitude = it
-        }
+        startLocation.latitude = parameters["latitude"]?.toDoubleOrNull() ?: Double.NaN
+        startLocation.longitude = parameters["longitude"]?.toDoubleOrNull() ?: Double.NaN
     }
 
     private fun getLocation(latitude: String, longitude: String): Location {
