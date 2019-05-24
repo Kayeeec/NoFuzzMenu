@@ -1,0 +1,24 @@
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+<item
+    android:width="50dp"
+    android:height="50dp"
+    >
+    <shape android:shape="oval">
+        <solid android:color="#40F50057"/>
+        <size
+            android:width="50dp"
+            android:height="50dp"
+            />
+    </shape>
+</item>
+
+<item
+    android:width="42dp"
+    android:height="42dp"
+    android:gravity="center"
+    android:drawable="@drawable/ic_restaurant_menu_black_24dp"
+    >
+</item>
+
+</layer-list>
+

@@ -5,22 +5,26 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import cz.muni.fi.nofuzzmenu.R
 import cz.muni.fi.nofuzzmenu.activity.RestaurantDetailActivity
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
+import cz.muni.fi.nofuzzmenu.utils.RestaurantThumbnails
 
 
 class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>) : RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
 
     fun refresh(restaurants: List<RestaurantInfoDto>) {
         this.restaurants = restaurants.sortedBy { it.distance }.toMutableList()
+        RestaurantThumbnails.resetCounter()
         notifyDataSetChanged()
     }
 
     fun clear() {
         this.restaurants.clear()
+        RestaurantThumbnails.resetCounter()
         notifyDataSetChanged()
     }
 
@@ -65,7 +69,7 @@ class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>
      * TODO: put necessary data here, according to mockups
      */
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-
+        var thumbnail = itemView.findViewById<ImageView>(R.id.thumbnail)
         var name: TextView = itemView.findViewById(R.id.name)
         var distance: TextView = itemView.findViewById(R.id.distance)
         var cuisines = itemView.findViewById<TextView>(R.id.cuisine)
@@ -76,6 +80,7 @@ class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>
             //Glide.with(context)
             //    .load(user.avatarUrl)
             //    .into(avatar)
+            thumbnail.setImageResource(RestaurantThumbnails.getThumbnailDrawableAndIncrement())
             name.text = restaurant.name
             Log.d("rest list adapter", distance.toString())
             distance.text = restaurant.distanceString
