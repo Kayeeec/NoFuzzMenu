@@ -25,4 +25,8 @@
     <string name="location_perm_request_title">Povolit získávání polohy</string>
     <string name="no_data_message_list">Pardon, údaje nejsou k dispozici - zkuste změnit parametry vyhledávání.</string>
     <string name="no_data_message_menus">Pardon, údaje nejsou k dispozici.</string>
+    <string name="label_price_range">Cenové rozpětí</string>
+    <string name="label_rating">Hodnocení</string>
+    <string name="sort_order">Pořadí</string>
+    <string name="sort_by">Řadit podle</string>
 </resources>
