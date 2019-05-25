@@ -17,7 +17,7 @@ import cz.muni.fi.nofuzzmenu.utils.RestaurantThumbnails
 class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>) : RecyclerView.Adapter<RestaurantsAdapter.ViewHolder>() {
 
     fun refresh(restaurants: List<RestaurantInfoDto>) {
-        this.restaurants.addAll(restaurants.toMutableList())
+        this.restaurants = this.restaurants.union(restaurants).toMutableList()
         RestaurantThumbnails.resetCounter()
         notifyDataSetChanged()
     }
