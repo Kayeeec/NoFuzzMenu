@@ -17,6 +17,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.view.View
 import androidx.coordinatorlayout.widget.CoordinatorLayout
 import androidx.core.app.ActivityCompat
+import androidx.fragment.app.FragmentManager
 import com.google.android.gms.location.*
 import com.google.android.gms.maps.CameraUpdateFactory
 import com.google.android.gms.maps.GoogleMap
@@ -48,7 +49,10 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
         setContentView(R.layout.activity_location_pick)
         setDefaultLocation()
         setUpCenterButton()
-        //val prefs = context?.getSharedPreferences(preferencesName, Context.MODE_PRIVATE) ?: return HashMap()
+
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        supportFragmentManager.beginTransaction().hide(mapFragment).commit()
 
         prefs = PreferenceManager.getDefaultSharedPreferences(this)
 
@@ -142,7 +146,15 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
         }
 
         val activityView = findViewById<CoordinatorLayout>(R.id.location_activity)
+        val centerButtonView = findViewById<FloatingActionButton>(R.id.button_center)
         activityView.visibility = View.VISIBLE
+        centerButtonView.visibility = View.VISIBLE
+
+        val fm: FragmentManager = supportFragmentManager
+        val mapFragment = fm.findFragmentById(R.id.map) ?: return
+        fm.beginTransaction()
+          .show(mapFragment)
+          .commit()
     }
 
     private fun requestLocationPermission() {
