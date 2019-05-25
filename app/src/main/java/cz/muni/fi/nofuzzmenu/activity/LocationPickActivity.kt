@@ -90,7 +90,9 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
 
     override fun onResume() {
         super.onResume()
-
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        supportFragmentManager.beginTransaction().hide(mapFragment).commit()
         // subscribe to location updates
         setStartingLocation()
         Log.d(TAG, "onResume currentLocation: $currentLocation")
@@ -101,6 +103,10 @@ class LocationPickActivity : AppCompatActivity(), OnMapReadyCallback  {
         // unsubscribe from location updates
         fusedLocationClient.removeLocationUpdates(locationCallback)
         Log.d(TAG, "Unsubscribed from location updates (onPause)")
+        
+        val mapFragment = supportFragmentManager
+            .findFragmentById(R.id.map) as SupportMapFragment
+        supportFragmentManager.beginTransaction().hide(mapFragment).commit()
     }
 
     /**

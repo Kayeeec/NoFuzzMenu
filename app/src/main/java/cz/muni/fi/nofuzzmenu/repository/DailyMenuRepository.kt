@@ -34,12 +34,11 @@ class DailyMenuRepository() : BaseRepository() {
 
     private suspend fun fetchFromApi(restaurantId: String): MutableList<MenuItemDto> {
         Log.d(TAG, "Fetching restaurant #${restaurantId} menu from api.")
-        //        val call = zomatoApi.service.getMenuAsync(apiKey = zomatoApi.apiKey, restaurantId = "16506939") //working menu display
         val call = zomatoApi.service.getMenuAsync(apiKey = zomatoApi.apiKey, restaurantId = restaurantId)
 
         val response = safeApiCall(
             call = { call.await() },
-            errorMessage = "Error fetching restaurant's daily menu from zomato." //todo proper exceptions
+            errorMessage = "Error fetching restaurant's daily menu from zomato."
         )
         val result = mutableListOf<MenuItemDto>()
         response?.daily_menus?.forEach { zomatoMenu: ZomatoMenu ->
@@ -65,7 +64,8 @@ class DailyMenuRepository() : BaseRepository() {
             return today in startDate..endDate
         }
         if (startDate == null && endDate == null){
-            return true // todo what to return? just include in the list? failed to parse? probably won't be null tho
+            // include unknowns in the list
+            return true
         }
         if (startDate != null) return today.isEqual(startDate)
         return today.isEqual(endDate)

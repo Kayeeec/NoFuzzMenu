@@ -6,8 +6,6 @@ import cz.muni.fi.nofuzzmenu.repository.RealmUtils
 import io.realm.Realm
 import io.realm.RealmConfiguration
 
-
-
 class App : Application() {
 
     companion object {

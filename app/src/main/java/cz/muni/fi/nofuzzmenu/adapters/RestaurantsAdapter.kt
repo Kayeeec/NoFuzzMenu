@@ -28,11 +28,6 @@ class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>
         notifyDataSetChanged()
     }
 
-    fun addAll(restaurants: List<RestaurantInfoDto>){
-        this.restaurants.addAll(restaurants)
-        this.restaurants
-    }
-
     /**
      * Creates new ViewHolder instances and inflates them with XML layout.
      */
@@ -62,7 +57,6 @@ class RestaurantsAdapter(private var restaurants: MutableList<RestaurantInfoDto>
     override fun getItemCount(): Int {
         return restaurants.size
     }
-
 
     /**
      * Reusable ViewHolder objects.

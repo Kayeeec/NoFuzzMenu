@@ -27,7 +27,6 @@ class RestaurantListFragment : Fragment() {
     private val TAG = this.javaClass.name
     private val MAX_RESTAURANTS = 140
 
-    // TODO: pagination https://stackoverflow.com/questions/16661662/how-to-implement-pagination-in-android-listview
     private val adapter = RestaurantsAdapter(ArrayList())
     private var liveRestaurants = MutableLiveData<MutableList<RestaurantInfoDto>>()
     private val coroutineContext: CoroutineContext

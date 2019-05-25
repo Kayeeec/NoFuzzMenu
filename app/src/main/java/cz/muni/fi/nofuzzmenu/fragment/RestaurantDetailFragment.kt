@@ -124,7 +124,7 @@ class RestaurantDetailFragment : Fragment() {
             val menus = repository.getMenu(restaurant.id)
             liveMenus.postValue(menus)
         }
-        liveMenus.observe(this, Observer { menus -> //todo better error handling? try catch etc
+        liveMenus.observe(this, Observer { menus ->
             if (menus.isNotEmpty()){
                 adapter.refresh(menus)
                 list?.visibility = View.VISIBLE
