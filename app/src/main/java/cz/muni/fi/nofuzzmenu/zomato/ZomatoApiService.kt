@@ -41,9 +41,9 @@ interface ZomatoApiService {
         @Query("q") query: String?,
         @Query("lat") latitude: String?,
         @Query("lon") longitude: String?,
-        @Query("radius") radius: Double?, // does not work too well, will have to filter manually
+        @Query("radius") radius: Double?,
         @Query("cuisines") cuisines: String?, // comma-separated IDs
-        @Query("sort") sortBy: String?, // TODO use enum, to string: cost, rating, real_distance (dist works well)
+        @Query("sort") sortBy: String?, // should use enum - to string: cost, rating, real_distance
         @Query("order") sortOrder: String?, // asc/desc
         @Query("start") start: Int?,
         @Query("count") count: Int?
@@ -55,7 +55,7 @@ interface ZomatoApiService {
         @Query("q") query: String?,
         @Query("lat") latitude: String?,
         @Query("lon") longitude: String?,
-        @Query("radius") radius: Double?, // does not work too well, will have to filter manually
+        @Query("radius") radius: Double?,
         @Query("cuisines") cuisines: String?, // comma-separated IDs
         @Query("sort") sortBy: String?, // cost, rating, real_distance
         @Query("order") sortOrder: String?, // asc/desc
@@ -63,7 +63,7 @@ interface ZomatoApiService {
         @Query("count") count: Int?
     ) : Deferred<Response<ZomatoRestaurantsListResponse>>
 
-    //https://developers.zomato.com/api/v2.1/dailymenu?res_id=19080841
+    //https://developers.zomato.com/api/v2.1/dailymenu?res_id=19080841 : working menu
     @GET("dailymenu")
     fun getMenuAsync(
         @Header("user_key") apiKey: String,

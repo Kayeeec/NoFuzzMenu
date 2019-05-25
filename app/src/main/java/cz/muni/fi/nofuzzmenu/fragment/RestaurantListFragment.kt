@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import cz.muni.fi.nofuzzmenu.R
+import cz.muni.fi.nofuzzmenu.adapters.PaginationScrollListener
 import cz.muni.fi.nofuzzmenu.adapters.RestaurantsAdapter
 import cz.muni.fi.nofuzzmenu.dto.view.RestaurantInfoDto
 import cz.muni.fi.nofuzzmenu.repository.RestaurantRepository
@@ -24,14 +25,16 @@ import kotlin.coroutines.CoroutineContext
 
 class RestaurantListFragment : Fragment() {
     private val TAG = this.javaClass.name
+    private val MAX_RESTAURANTS = 140
 
-    // TODO: pagination https://stackoverflow.com/questions/16661662/how-to-implement-pagination-in-android-listview
     private val adapter = RestaurantsAdapter(ArrayList())
     private var liveRestaurants = MutableLiveData<MutableList<RestaurantInfoDto>>()
     private val coroutineContext: CoroutineContext
         get() = Job() + Dispatchers.Default
     private val scope = CoroutineScope(coroutineContext)
     private val repository = RestaurantRepository()
+    private var start = 0
+    private val count = 20
 
     private lateinit var swipeRefreshLayout: SwipeRefreshLayout
 
@@ -42,12 +45,49 @@ class RestaurantListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val list = view.findViewById<RecyclerView>(android.R.id.list)
+        val layoutManager = LinearLayoutManager(context)
+        list.layoutManager = layoutManager
+        list.adapter = adapter
+        list.setHasFixedSize(true)
+        list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
+        list.visibility = View.GONE
+
+        val searchParameters = loadSavedParameters()
+        Log.d(TAG, "Loaded search parameters: $searchParameters")
+
+        liveRestaurants.observe(this, Observer {restaurants ->
+            if (restaurants.isNotEmpty()){
+                adapter.refresh(restaurants)
+                list.visibility = View.VISIBLE
+                hideNoDataText()
+            } else if (adapter.itemCount == 0) {
+                showNoDataText()
+            }
+            hideLoading()
+        })
+
         swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout)
         swipeRefreshLayout.setOnRefreshListener {
-            loadRestaurants(view)
+            loadRestaurants(searchParameters, start, count)
         }
         swipeRefreshLayout.setColorSchemeResources(R.color.swipeRefresh1, R.color.swipeRefresh2, R.color.swipeRefresh3, R.color.swipeRefresh4)
-        loadRestaurants(view)
+        loadRestaurants(searchParameters, start, count)
+
+        /**
+         * scroll listener for loading more items when the user scrolls to the bottom
+         */
+        list.addOnScrollListener(object: PaginationScrollListener(list.layoutManager as LinearLayoutManager) {
+            override fun loadMoreItems() {
+                showLoading()
+                start += count
+                loadRestaurants(searchParameters, start, count)
+            }
+
+            override fun isLastPage(): Boolean {
+                return start + count >= MAX_RESTAURANTS
+            }
+        })
     }
 
     override fun onDestroy() {
@@ -55,34 +95,12 @@ class RestaurantListFragment : Fragment() {
         cancelAllRequests()
     }
 
-    private fun loadRestaurants(view: View) {
+    private fun loadRestaurants(searchParameters: Map<String, String>, start: Int, count: Int) {
         showLoading()
-        hideNoDataText()
-
-        val list = view.findViewById<RecyclerView>(android.R.id.list)
-        list.visibility = View.GONE
-        list.layoutManager = LinearLayoutManager(context)
-        list.adapter = adapter
-        list.addItemDecoration(DividerItemDecoration(context, LinearLayoutManager.VERTICAL))
-
-        val searchParameters = loadSavedParameters()
-        Log.d(TAG, "Loaded search parameters: $searchParameters")
-
         scope.launch {
-            val restaurants = repository.getRestaurants(searchParameters)
+            val restaurants = repository.getRestaurants(searchParameters, start, count)
             liveRestaurants.postValue(restaurants)
         }
-
-        liveRestaurants.observe(this, Observer {restaurants ->
-            if (restaurants.isNotEmpty()){
-                adapter.refresh(restaurants)
-                list.visibility = View.VISIBLE
-            } else {
-                showNoDataText()
-            }
-            hideLoading()
-        })
-
     }
 
     private fun showNoDataText() {

@@ -19,14 +19,20 @@ class SearchSettingsFragment: PreferenceFragmentCompat() {
     private fun updatePreferenceSummaries() {
         val sortPreference = findPreference("sortBy") as androidx.preference.ListPreference
         val orderPreference = findPreference("order") as androidx.preference.ListPreference
+        val radiusPreference = findPreference("radius") as androidx.preference.SeekBarPreference
         sortPreference.summary = sortPreference.value
         orderPreference.summary = orderPreference.value
+        radiusPreference.summary = "${radiusPreference.value}m"
         sortPreference.setOnPreferenceChangeListener { preference, newValue ->
             preference.summary = newValue.toString()
             true
         }
         orderPreference.setOnPreferenceChangeListener { preference, newValue ->
             preference.summary = newValue.toString()
+            true
+        }
+        radiusPreference.setOnPreferenceChangeListener { preference, newValue ->
+            preference.summary = "${newValue}m"
             true
         }
     }

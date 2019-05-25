@@ -11,7 +11,6 @@ class RestaurantRepository : BaseRepository() {
     private val zomatoApi = ZomatoApi(BuildConfig.ZOMATO_API_KEY) //todo api key storage
     private val startLocation = Location("")
 
-    //todo default count from settings
     suspend fun getRestaurants(
         parameters: Map<String, String>,
         start: Int = 0,
@@ -59,7 +58,7 @@ class RestaurantRepository : BaseRepository() {
             latitude = parameters["latitude"],
             longitude = parameters["longitude"],
             radius = parameters["radius"]?.toDouble(),
-            cuisines = parameters["cuisines"], // TODO use list, put here as comma-separated list
+            cuisines = parameters["cuisines"],
             sortBy = "real_distance",
             sortOrder = "asc",
             start = start,
@@ -67,7 +66,7 @@ class RestaurantRepository : BaseRepository() {
         )
         val zomatoResponse = safeApiCall(
             call = { call.await() },
-            errorMessage = "Error fetching restaurants from zomato." // todo proper exception
+            errorMessage = "Error fetching restaurants from zomato."
         )
 
         val zomatoRestaurants = mutableListOf<RestaurantInfoDto>()
