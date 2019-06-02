@@ -80,9 +80,17 @@ class RestaurantDetailFragment : Fragment() {
 
         val rating = view?.findViewById<TextView>(R.id.detail_rating)
         rating?.text = restaurant.rating()
+        rating?.visibility = if (rating?.text.isNullOrBlank() ) View.GONE else View.VISIBLE
 
         val priceRange = view?.findViewById<TextView>(R.id.detail_price_range)
-        priceRange?.text = restaurant.priceRange()
+        priceRange?.text = restaurant.priceRange().trim()
+
+        val comma = view?.findViewById<TextView>(R.id.comma)
+
+        if (priceRange?.text.isNullOrBlank()){
+            priceRange?.visibility = View.GONE
+            comma?.visibility = View.GONE
+        }
 
         val address = view?.findViewById<TextView>(R.id.detail_address)
         address?.text = restaurant.address
