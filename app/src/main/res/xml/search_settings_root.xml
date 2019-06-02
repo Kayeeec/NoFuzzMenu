@@ -5,15 +5,15 @@
 
     <SeekBarPreference
         app:key="radius"
-        app:title="@string/radius"
-        app:summary="@string/radius_summary"
+        app:title="@string/radius_title"
         android:min="200"
         android:max="3000"
-        app:iconSpaceReserved="false"/>
-    <!--TODO: style the seek bar so that higher numbers show full, and possibly make larger steps (50 meters?) -->
+        app:iconSpaceReserved="false"
+        android:defaultValue="500"
+        app:showSeekBarValue="false"/>
     <ListPreference
         app:key="sortBy"
-        app:title="@string/sort_by"
+        app:title="@string/sortBy_title"
         android:defaultValue="real_distance"
         android:entries="@array/search_sort_options_text"
         android:entryValues="@array/search_sort_options"
@@ -21,7 +21,7 @@
 
     <ListPreference
         app:key="order"
-        app:title="@string/sort_order"
+        app:title="@string/sort_order_title"
         android:defaultValue="asc"
         android:entryValues="@array/search_order_options"
         android:entries="@array/search_order_options_text"

@@ -19,14 +19,23 @@
     <string name="search">Search on Google</string>
     <string name="menu_loading_message">Fetching today\'s menu…</string>
     <string name="restaurant_icon">Restaurant icon</string>
-    <string name="radius">Radius</string>
+    <string name="radius_title">Search radius</string>
     <string name="radius_summary">Specify restaurant search radius (in meters).</string>
     <string name="set_starting_location">Tap to pick a location</string>
     <string name="location_perm_request_title">Location permission request</string>
     <string name="location_perm_request_message">The app automatically searches for restaurants around you. Without your location we can not suggest relevant restaurants.</string>
     <string name="no_data_message_list">Sorry. No data available - try changing the search parameters</string>
     <string name="no_data_message_menus">Sorry. No data available.</string>
-    <string name="rating" translatable="false">%1$s / %2$s</string>
-    <string name="sort_order">Sort order</string>
-    <string name="sort_by">Sort results by</string>
+    <string name="sortBy_title">Sort results by</string>
+    <string name="sort_order_title">Sort order</string>
+    <string name="choice_real_distance">real_distance</string>
+    <string name="choice_cost">cost</string>
+    <string name="choice_rating">rating</string>
+    <string name="choice_asc">asc</string>
+    <string name="choice_desc">desc</string>
+    <string name="choice_real_distance_string">Distance</string>
+    <string name="choice_cost_string">Cost</string>
+    <string name="choice_rating_string">Rating</string>
+    <string name="choice_asc_string">Ascending</string>
+    <string name="choice_desc_string">Descending</string>
 </resources>

@@ -7,8 +7,8 @@ import kotlin.math.roundToInt
 
 data class RestaurantInfoDto(
     var id: String,
-    var name: String, //ok
-    var address: String, // ok
+    var name: String,
+    var address: String,
     val cuisines: String?,
     val distance: Float,  // distance in meters from the location used in the request, for sorting
     val price_range: Float, // price range categories
@@ -40,7 +40,7 @@ data class RestaurantInfoDto(
     private fun convertDistanceToString(distance: Float): String {
         if (distance > 1000){
             val n = distance / 1000
-            val fmtLocale = Locale.getDefault(Locale.Category.FORMAT) // todo: will need to get system locale?
+            val fmtLocale = Locale.getDefault(Locale.Category.FORMAT)
             val formatter = NumberFormat.getInstance(fmtLocale)
             formatter.maximumFractionDigits = 1
             return "${formatter.format(n)}km"

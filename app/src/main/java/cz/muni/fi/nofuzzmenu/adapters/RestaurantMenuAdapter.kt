@@ -42,7 +42,6 @@ class RestaurantMenuAdapter(private var menus: List<MenuItemDto>) : RecyclerView
 
     /**
      * Reusable ViewHolder objects.
-     * TODO: put necessary data here, according to mockups
      */
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
 
@@ -51,10 +50,9 @@ class RestaurantMenuAdapter(private var menus: List<MenuItemDto>) : RecyclerView
         var cost: TextView = itemView.findViewById(R.id.detail_item_cost)
 
         fun bind(menuItem: MenuItemDto) {
-            // thumbnail todo
             number.text = formatItemNumber(adapterPosition)
-            name.text = menuItem.name //todo format
-            cost.text = menuItem.cost.toString() //todo format
+            name.text = menuItem.name
+            cost.text = menuItem.cost
         }
 
         private fun formatItemNumber(adapterPosition: Int): String {

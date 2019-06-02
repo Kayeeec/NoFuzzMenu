@@ -8,7 +8,7 @@
     <string name="menu_loading_message">Stahuji dnešní menu…</string>
     <string name="menu_web">Web menu</string>
     <string name="navigate">Navigovat</string>
-    <string name="radius">Rádius</string>
+    <string name="radius_title">Rozsah vyhledávání</string>
     <string name="radius_summary">Nastaví vyhledávání restaurací do dané vzdálenosti (v metrech).</string>
     <string name="restaurant_icon">Ikona restaurace.</string>
     <string name="restaurant_info_header">Restaurace:</string>
@@ -25,8 +25,18 @@
     <string name="location_perm_request_title">Povolit získávání polohy</string>
     <string name="no_data_message_list">Pardon, údaje nejsou k dispozici - zkuste změnit parametry vyhledávání.</string>
     <string name="no_data_message_menus">Pardon, údaje nejsou k dispozici.</string>
-    <string name="label_price_range">Cenové rozpětí</string>
     <string name="label_rating">Hodnocení</string>
-    <string name="sort_order">Pořadí</string>
-    <string name="sort_by">Řadit podle</string>
+    <string name="label_price_range">Cenová kategorie</string>
+    <string name="sortBy_title">Seřadit dle</string>
+    <string name="sort_order_title">Pořadí</string>
+    <string name="choice_real_distance">real_distance</string>
+    <string name="choice_cost">cost</string>
+    <string name="choice_rating">rating</string>
+    <string name="choice_asc">asc</string>
+    <string name="choice_desc">desc</string>
+    <string name="choice_real_distance_string">Vzdálenost</string>
+    <string name="choice_cost_string">Cena</string>
+    <string name="choice_rating_string">Hodnocení</string>
+    <string name="choice_asc_string">Vzestupně</string>
+    <string name="choice_desc_string">Sestupně</string>
 </resources>
