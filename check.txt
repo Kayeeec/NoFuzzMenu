@@ -1,0 +1,9 @@
+- Settings:
+* Zobrazovat v summary vase interni pojmenovani neni moc pekne (real_distance, asc/desc)
+* Chybi mi nejake potvrzovaci tlacitko na mape pro vybrani polohy
+
+- Item detail:
+* Porad mate jednotlive texty hrozne namackane na sebe, dal bych tomu trochu prostoru
+* Today's Menu - Sorry. No data available. Takze mi je cela appka vlastne k nicemu, protoze mi akorat ukaze restaurace v okoli, ale uz mi nerekne, kde co maji
+
+- Projekt se dobre cte, packaging se mi libi, zadne prasacke 400 radkove metody

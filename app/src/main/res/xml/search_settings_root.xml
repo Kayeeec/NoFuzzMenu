@@ -3,6 +3,7 @@
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <!-- Libilo by se mi, kdyby se cislo menilo v prubehu tahani seekbarem -->
     <SeekBarPreference
         app:key="radius"
         app:title="@string/radius_title"

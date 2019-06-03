@@ -135,6 +135,7 @@ class RestaurantDetailFragment : Fragment() {
         })
     }
 
+    // Like ;)
     private fun showLoading() {
         swipeRefreshLayout?.isRefreshing = true
     }

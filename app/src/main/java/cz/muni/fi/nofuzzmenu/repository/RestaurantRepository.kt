@@ -11,6 +11,7 @@ class RestaurantRepository : BaseRepository() {
     private val zomatoApi = ZomatoApi(BuildConfig.ZOMATO_API_KEY) //todo api key storage
     private val startLocation = Location("")
 
+    // Like ;)
     suspend fun getRestaurants(
         parameters: Map<String, String>,
         start: Int = 0,

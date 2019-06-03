@@ -22,7 +22,7 @@ class SearchSettingsFragment: PreferenceFragmentCompat() {
         val radiusPreference = findPreference("radius") as androidx.preference.SeekBarPreference
         sortPreference.summary = sortPreference.value
         orderPreference.summary = orderPreference.value
-        radiusPreference.summary = "${radiusPreference.value}m"
+        radiusPreference.summary = "${radiusPreference.value}m"     // Idealni kandidat pro pouziti nejakeho formatteru
         sortPreference.setOnPreferenceChangeListener { preference, newValue ->
             preference.summary = newValue.toString()
             true
